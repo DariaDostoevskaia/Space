@@ -1,0 +1,12 @@
+Введение в Unity и создание первой игры.
+
+1. Что такое ООП. ООП (объектно-ориентированное программирование)
+2. Изучить дополнительно интерфейс юнити. https://docs.unity3d.com/ru/530/Manual/UsingTheEditor.html
+3. Найти недостающие ассеты для игры
+4. Найти космос для создания материала
+5. Изучить концепции ООП: абстракция,  наследование.
+6. Жизненный цикл фукнций unity Awake, Start, Update, OnEnable, FixedUpdate, LateUpdate, OnDestroy, OnDisable https://docs.unity3d.com/ru/530/Manual/ExecutionOrder.html
+7. Изучить компонент Transform
+8. Изучить Vector3
+9. Добавить фоновую музыку. 
+10. Изучить AssetStore
