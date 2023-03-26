@@ -811,7 +811,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e6c05bad0579f2145b7b96866b1df99f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _playerSpeed: 2
+  _playerSpeed: 0.1
+  _inertia: 0.3
   _upButtons: 77000000
   _downButtons: 73000000
   _leftButtons: 61000000

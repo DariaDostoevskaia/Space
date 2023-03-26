@@ -1,35 +1,31 @@
-using System.Collections;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.PlayerLoop;
 
 public class Sample : MonoBehaviour
 {
     private void Awake()
     {
-        Debug.Log("Awake");
-        Debug.LogWarning("Awake");
-        Debug.LogError("Awake");
-
-
     }
-    // Start is called before the first frame update
+
     private void Start()
     {
-        Debug.Log("Awake");
-        Debug.LogWarning("Awake");
-        Debug.LogError("Awake");
-
+        var items = new List<string>();
+        for (int i = 1; i <= 10; i++)
+        {
+            items.Add($"item_{i}");
+        }
+        for (int i = 0; i < items.Count; i++)
+        {
+            Debug.Log(items[i]);
+        }
     }
 
-    // Update is called once per frame
     private void Update()
     {
-
     }
 
     private void FixedUpdate()
     {
-        
     }
 }
