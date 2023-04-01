@@ -13,7 +13,7 @@ public class EnemyShip : MonoBehaviour
 
     private float _currentSpeed;
     private Vector3 _lastMovement;
-    private Vector3 _mousePosition;
+    private Vector3 _enemyMousePosition;
 
     private Vector3 _movement;
 
@@ -23,8 +23,8 @@ public class EnemyShip : MonoBehaviour
 
     private void Update()
     {
-        _mousePosition = Input.mousePosition;
-        _mousePosition = Camera.main.ScreenToWorldPoint(_mousePosition);
+        //if (Input.GetKey(KeyCode.L))
+        //    transform.rotation *= Quaternion.Euler(0f, 360f * Time.deltaTime, 0f);
 
         _movement += GetDirection(_upArrows, Vector3.up);
         _movement += GetDirection(_downArrows, Vector3.down);
@@ -73,10 +73,25 @@ public class EnemyShip : MonoBehaviour
     private void Rotation()
     {
         var shipPosition = transform.position;
-        var dx = shipPosition.x - _mousePosition.x;
-        var dy = shipPosition.y - _mousePosition.y;
+        var dx = shipPosition.x - _enemyMousePosition.x;
+        var dy = shipPosition.y - _enemyMousePosition.y;
         var angle = Mathf.Atan2(dy, dx) * Mathf.Rad2Deg;
         var rotation = Quaternion.Euler(new Vector3(0, 0, angle + 90));
         transform.rotation = rotation;
     }
+
+    //private void Flip()
+    //{
+    //    var dir = transform.position - _moveSpots[_randomSpot].position;
+    //    if (dir.x < 0.0f)
+    //    {
+    //        _spriteRenderer.flipX = true;
+    //        _isForward = true;
+    //    }
+    //    else
+    //    {
+    //        _spriteRenderer.flipX = false;
+    //        _isForward = false;
+    //    }
+    //}
 }
