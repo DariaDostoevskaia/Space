@@ -20,9 +20,14 @@ public class Sample : MonoBehaviour
         }
 
         var positions = new List<Vector3>(20);
-        var number = Random.Range(0, 10);
-        for (int i = 0; i < 20; i++)
+        for (int i = 0; i < positions.Capacity; i++)
         {
+            var x = Random.Range(0, 11);
+            var y = Random.Range(0, 11);
+            var z = Random.Range(0, 11);
+
+            var position = new Vector3(x, y, z);
+            positions.Add(position);
         }
     }
 
