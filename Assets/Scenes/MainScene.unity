@@ -218,7 +218,7 @@ GameObject:
   - component: {fileID: 517149901}
   - component: {fileID: 517149903}
   m_Layer: 0
-  m_Name: EnemyShip
+  m_Name: Player2Ship
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -284,7 +284,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 517149900}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 9.17, y: 0.51, z: -3.873929e-10}
+  m_LocalPosition: {x: 8.16, y: 0.54, z: -3.873929e-10}
   m_LocalScale: {x: 0.2815844, y: 0.3, z: 0.2815844}
   m_ConstrainProportionsScale: 1
   m_Children: []
@@ -300,15 +300,17 @@ MonoBehaviour:
   m_GameObject: {fileID: 517149900}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4e344a0a8ab192746a1d6414cc864909, type: 3}
+  m_Script: {fileID: 11500000, guid: 80539748ba8204c40b0668e5f7a69bbe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _playerSpeed: 0.1
   _inertia: 0.3
-  _upButtons: 29000000
-  _downButtons: 12010000
-  _leftButtons: 28000000
-  _rightButtons: 13010000
+  _upButtons: 08010000
+  _downButtons: 02010000
+  _leftButtons: 04010000
+  _rightButtons: 06010000
+  _rotationLeftButton: 07010000
+  _rotationRightButton: 09010000
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -811,7 +813,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1555618446}
   m_LocalRotation: {x: -0.000003470108, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -9.5539, y: 0.774, z: -3.6556963e-10}
+  m_LocalPosition: {x: -8.1, y: 0.72, z: 0}
   m_LocalScale: {x: 0.1, y: 0.1, z: 0.1}
   m_ConstrainProportionsScale: 1
   m_Children: []
@@ -827,7 +829,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1555618446}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e6c05bad0579f2145b7b96866b1df99f, type: 3}
+  m_Script: {fileID: 11500000, guid: bbe1ff258fed33642bd9930fdbf41600, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _playerSpeed: 0.1
