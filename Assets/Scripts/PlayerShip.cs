@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -10,8 +9,6 @@ public abstract class PlayerShip : MonoBehaviour
     [SerializeField] private List<KeyCode> _downButtons;
     [SerializeField] private List<KeyCode> _leftButtons;
     [SerializeField] private List<KeyCode> _rightButtons;
-
-    protected Vector3 TargetRotation;
 
     private float _currentSpeed;
     private Vector3 _lastMovement;
@@ -35,6 +32,7 @@ public abstract class PlayerShip : MonoBehaviour
         Movement();
     }
 
+    protected abstract void Rotation();
     protected abstract void HandleTargetRotation();
 
     protected Vector3 GetDirection(List<KeyCode> buttons, Vector3 direction)
@@ -66,18 +64,5 @@ public abstract class PlayerShip : MonoBehaviour
 
         transform.Translate(_lastMovement * _currentSpeed, Space.World);
         _currentSpeed *= _inertia;
-    }
-
-    private void Rotation()
-    {
-        if (TargetRotation.magnitude <= 0)
-            return;
-
-        var shipPosition = transform.position;
-        var dx = shipPosition.x - TargetRotation.x;
-        var dy = shipPosition.y - TargetRotation.y;
-        var angle = Mathf.Atan2(dy, dx) * Mathf.Rad2Deg;
-        var rotation = Quaternion.Euler(new Vector3(0, 0, angle + 90));
-        transform.rotation = rotation;
     }
 }
