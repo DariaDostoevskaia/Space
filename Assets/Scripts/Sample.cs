@@ -3,11 +3,13 @@ using UnityEngine;
 
 public class Sample : MonoBehaviour
 {
-    private void Awake()
+    private void Start()
     {
+        DoExercise1();
+        DoExercise2();
     }
 
-    private void Start()
+    private void DoExercise1()
     {
         var items = new List<string>();
         for (int i = 1; i <= 10; i++)
@@ -18,7 +20,10 @@ public class Sample : MonoBehaviour
         {
             Debug.Log(items[i]);
         }
+    }
 
+    private void DoExercise2()
+    {
         var positions = new List<Vector3>(20);
         for (int i = 0; i < positions.Capacity; i++)
         {
@@ -29,13 +34,9 @@ public class Sample : MonoBehaviour
             var position = new Vector3(x, y, z);
             positions.Add(position);
         }
-    }
-
-    private void Update()
-    {
-    }
-
-    private void FixedUpdate()
-    {
+        for (int i = 1; i < positions.Capacity; i++)
+        {
+            var temp = positions[i] + positions[i - 1];
+        }
     }
 }
