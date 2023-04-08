@@ -309,6 +309,7 @@ MonoBehaviour:
   _downButtons: 02010000
   _leftButtons: 04010000
   _rightButtons: 06010000
+  _movementBowShip: 0
   _rotationLeftButton: 07010000
   _rotationRightButton: 09010000
 --- !u!1 &519420028
@@ -838,3 +839,4 @@ MonoBehaviour:
   _downButtons: 73000000
   _leftButtons: 61000000
   _rightButtons: 64000000
+  _movementBowShip: 0

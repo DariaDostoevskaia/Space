@@ -9,6 +9,7 @@ public abstract class PlayerShip : MonoBehaviour
     [SerializeField] private List<KeyCode> _downButtons;
     [SerializeField] private List<KeyCode> _leftButtons;
     [SerializeField] private List<KeyCode> _rightButtons;
+    [SerializeField] private bool _movementBowShip;
 
     private float _currentSpeed;
     private Vector3 _lastMovement;
@@ -33,6 +34,7 @@ public abstract class PlayerShip : MonoBehaviour
     }
 
     protected abstract void Rotation();
+
     protected abstract void HandleTargetRotation();
 
     protected Vector3 GetDirection(List<KeyCode> buttons, Vector3 direction)
@@ -64,5 +66,11 @@ public abstract class PlayerShip : MonoBehaviour
 
         transform.Translate(_lastMovement * _currentSpeed, Space.World);
         _currentSpeed *= _inertia;
+
+        if (_movementBowShip)
+        {
+            //Movement towards the bow of the ship;  ????
+            //transform.LookAt(transform.up, Vector2.zero);
+        }
     }
 }
