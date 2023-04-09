@@ -5,15 +5,23 @@ public abstract class PlayerShip : MonoBehaviour
 {
     [SerializeField] private float _playerSpeed = 2f;
     [SerializeField] private float _inertia = 0.9f;
+    [SerializeField] private bool _movementBowShip;
     [SerializeField] private List<KeyCode> _upButtons;
     [SerializeField] private List<KeyCode> _downButtons;
     [SerializeField] private List<KeyCode> _leftButtons;
     [SerializeField] private List<KeyCode> _rightButtons;
-    [SerializeField] private bool _movementBowShip;
 
     private float _currentSpeed;
     private Vector3 _lastMovement;
     private Vector3 _movement;
+    private Space _movementRelative;
+
+    private void Start()
+    {
+        _movementRelative = _movementBowShip
+            ? Space.Self
+            : Space.World;
+    }
 
     private void Update()
     {
@@ -55,7 +63,7 @@ public abstract class PlayerShip : MonoBehaviour
         if (_movement.magnitude > 0)
         {
             _currentSpeed = _playerSpeed;
-            transform.Translate(_movement * _playerSpeed, Space.World);
+            transform.Translate(_movement * _playerSpeed, _movementRelative);
             _lastMovement = _movement;
             _movement = Vector3.zero;
             return;
@@ -64,13 +72,7 @@ public abstract class PlayerShip : MonoBehaviour
         if (_currentSpeed <= 0)
             return;
 
-        transform.Translate(_lastMovement * _currentSpeed, Space.World);
+        transform.Translate(_lastMovement * _currentSpeed, _movementRelative);
         _currentSpeed *= _inertia;
-
-        if (_movementBowShip)
-        {
-            //Movement towards the bow of the ship;  ????
-            //transform.LookAt(transform.up, Vector2.zero);
-        }
     }
 }
