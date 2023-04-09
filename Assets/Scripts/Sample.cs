@@ -57,4 +57,18 @@ public class Sample : MonoBehaviour
             Debug.Log(positions[i]);
         }
     }
+
+    private void Update()
+    {
+        if (Input.GetKey(KeyCode.Space))
+        {
+            gameObject.SetActive(true);
+            gameObject.SetActive(false);
+            var yes = gameObject.activeSelf;
+        }
+    }
+
+    public void Test()
+    {
+    }
 }
