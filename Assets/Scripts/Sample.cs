@@ -1,13 +1,13 @@
-using System;
 using System.Collections.Generic;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class Sample : MonoBehaviour
 {
     private void Start()
     {
         //DoExercise1();
-        DoExercise2();
+        //DoExercise2();
     }
 
     private void DoExercise1()
@@ -27,41 +27,34 @@ public class Sample : MonoBehaviour
     {
         var positions = new List<Vector3>(20);
 
-        var x = 0;
-        var y = 0;
-        var z = 0;
-
         for (int i = 0; i < positions.Capacity; i++)
         {
-            x = UnityEngine.Random.Range(0, 11);
-            y = UnityEngine.Random.Range(0, 11);
-            z = UnityEngine.Random.Range(0, 11);
+            var x = Random.Range(0, 11);
+            var y = Random.Range(0, 11);
+            var z = Random.Range(0, 11);
 
             var position = new Vector3(x, y, z);
             positions.Add(position);
         }
-        var positionsSecond = new List<Vector3>(19);
-        for (int i = 0; i < positions.Capacity; i++)
+        for (int i = 0; i < positions.Count; i++)
         {
             if (i == 0)
             {
-                positionsSecond.Add(positions[0]);
                 continue;
             }
-            var temp = positions[i] + positions[i - 1];
-            positionsSecond.Add(temp);
+            positions[i - 1] += positions[i];
         }
-        for (int i = 0; i < positionsSecond.Capacity; i++)
+        for (int i = 0; i < positions.Count; i++)
         {
-            if (x + y + z > 5)
+            if (positions[i].x > 5)
             {
-                positionsSecond.RemoveAt(i);
-                positionsSecond.Capacity--;
+                positions.RemoveAt(i);
+                i--;
             }
         }
-        for (int i = 0; i < positionsSecond.Capacity; i++)
+        for (int i = 0; i < positions.Count; i++)
         {
-            Debug.Log(positionsSecond[i]);
+            Debug.Log(positions[i]);
         }
     }
 }
