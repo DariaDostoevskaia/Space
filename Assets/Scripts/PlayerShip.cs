@@ -1,6 +1,6 @@
-using System;
 using System.Collections.Generic;
 using UnityEngine;
+using Vector3 = UnityEngine.Vector3;
 
 public abstract class PlayerShip : MonoBehaviour
 {
@@ -16,10 +16,12 @@ public abstract class PlayerShip : MonoBehaviour
     [SerializeField] private Transform _laser;
     [SerializeField] private float _laserDistance;
     [SerializeField] private float _timeBetweenFires;
+    [SerializeField] private float _laserSpeed = 2.0f;
     [SerializeField] private List<KeyCode> _shootButtons;
 
     private float _timeNextFire;
     private float _currentSpeed;
+    public float _lifeTimeLaser = 2.0f;
     private Vector3 _lastMovement;
     private Vector3 _movement;
     private Space _movementRelative;
@@ -29,6 +31,8 @@ public abstract class PlayerShip : MonoBehaviour
         _movementRelative = _movementBowShip
             ? Space.Self
             : Space.World;
+
+        Destroy(_laser, _lifeTimeLaser);
     }
 
     private void Update()
@@ -56,13 +60,13 @@ public abstract class PlayerShip : MonoBehaviour
 
     private void ShootLaser()
     {
-        var positionX = transform.position.x;
-        //+(Mathf.Cos(transform.localEulerAngles.z - 90 + Mathf.Deg2Rad) * -_laserDistance);
-        var positionY = transform.position.y;
-        //+(Mathf.Cos(transform.localEulerAngles.z - 90 + Mathf.Deg2Rad) * -_laserDistance);
-        //требуется рефакторинг - создай отдельный метод
-
-        Instantiate(_laser, new Vector3(positionX, positionY, 0), transform.rotation);
+        if (Input.GetKeyDown(KeyCode.Mouse0))
+        {
+            transform.Translate(Vector3.up * Time.deltaTime * _laserSpeed);
+            float positionX = transform.position.x;
+            float positionY = transform.position.y;
+            Instantiate(_laser, new Vector3(positionX, positionY, 0), transform.rotation);
+        }
     }
 
     private void FixedUpdate()
