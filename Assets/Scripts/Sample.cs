@@ -4,6 +4,10 @@ using Random = UnityEngine.Random;
 
 public class Sample : MonoBehaviour
 {
+    [SerializeField] private float _distance = 1f;
+    public GameObject TestCube;
+    private Vector3 _jump;
+
     private void Start()
     {
         //DoExercise1();
@@ -62,13 +66,16 @@ public class Sample : MonoBehaviour
     {
         if (Input.GetKey(KeyCode.Space))
         {
-            gameObject.SetActive(true);
-            gameObject.SetActive(false);
-            var yes = gameObject.activeSelf;
+            //    gameObject.SetActive(true);
+            //    gameObject.SetActive(false);
+            //    var yes = gameObject.activeSelf;
+            Test2Jump();
         }
     }
 
-    public void Test()
+    public void Test2Jump()
     {
+        //TestCube.transform.Translate(_distance, 0, 0);
+        _jump += transform.position += Camera.main.transform.TransformDirection(new Vector3(1, 5, 100500));
     }
 }
