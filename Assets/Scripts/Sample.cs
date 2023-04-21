@@ -4,9 +4,9 @@ using Random = UnityEngine.Random;
 
 public class Sample : MonoBehaviour
 {
-    [SerializeField] private float _distance = 1f;
-    public GameObject TestCube;
-    private Vector3 _jump;
+    [SerializeField] private List<KeyCode> jump;
+    [SerializeField] private float x = 1f;
+    [SerializeField] private float y = 8f;
 
     private void Start()
     {
@@ -62,20 +62,17 @@ public class Sample : MonoBehaviour
         }
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
         if (Input.GetKey(KeyCode.Space))
         {
-            //    gameObject.SetActive(true);
-            //    gameObject.SetActive(false);
-            //    var yes = gameObject.activeSelf;
-            Test2Jump();
+            TestCube();
         }
     }
 
-    public void Test2Jump()
+    protected virtual void TestCube()
     {
-        //TestCube.transform.Translate(_distance, 0, 0);
-        _jump += transform.position += Camera.main.transform.TransformDirection(new Vector3(1, 5, 100500));
+        var probel = new Vector3(x, y, 0);
+        gameObject.transform.position = probel;
     }
 }
