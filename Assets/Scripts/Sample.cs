@@ -1,7 +1,5 @@
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
-using static UnityEngine.GraphicsBuffer;
 using Random = UnityEngine.Random;
 
 public class Sample : MonoBehaviour
