@@ -33,6 +33,7 @@ public abstract class PlayerShip : MonoBehaviour
     }
 
     protected abstract void Rotation();
+
     protected abstract void HandleTargetRotation();
 
     protected Vector3 GetDirection(List<KeyCode> buttons, Vector3 direction)

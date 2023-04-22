@@ -4,38 +4,77 @@ using Random = UnityEngine.Random;
 
 public class Sample : MonoBehaviour
 {
-    [SerializeField] private List<KeyCode> jump;
+    [SerializeField] private List<KeyCode> _jump;
+    [SerializeField] private List<KeyCode> _accelerations;
     [SerializeField] private float x = 1f;
     [SerializeField] private float y = 8f;
 
-    public float _speed = 0.1f;
+    [SerializeField] private float _acceleration = 2f;
+    [SerializeField] private float _speed = 2f;
+    [SerializeField] private float _resultSpeed;
 
-    private float _time;
-    private float _lerp;
-    private double _period;
-    private Vector3 start;
-    private Vector3 target;
-    private float distance;
-    private bool goRight;
-
-    //Пояснение из интернета:
-
-    //Взял за основу функцию f(x) = (1 - cos(a * x) ) / 2  , где a - параметр
-    //В нашем случае скорость. Чем больше a, тем более "сплюснутая" функция, тем
-    //быстрее пила
-
-    //Область значения f = [0 , 1]
-    //Аргумент функции x - время
-    //Значение функции - пройденный путь пилы
-    //Период f = 2PI / a
+    [SerializeField] private float _cosinus;
+    private float angle = 360;
 
     private void Start()
     {
         //DoExercise1();
         //DoExercise2();
-        start = transform.position; // point A
-        target = start + transform.right * distance * (goRight ? 1 : -1); // point B
-        _period = 2 * Mathf.PI / _speed;
+        //TestCube4Cosinus();
+    }
+
+    private void Update()
+    {
+        if (Input.GetKey(KeyCode.Space))
+        {
+            TestCube2();
+        }
+
+        if (Input.GetKey(KeyCode.W))
+        {
+            TestCube3();
+        }
+
+        //if (Input.GetMouseButton(0))
+        //{
+        TestCube4Cosinus();
+        //}
+
+        TestCube6();
+    }
+
+    private void TestCube2()
+    {
+        var probel = new Vector3(x, y, 0);
+        gameObject.transform.position = probel;
+    }
+
+    private void TestCube3()
+    {
+        _resultSpeed = _speed * _acceleration;
+    }
+
+    private void TestCube4Cosinus()
+    {
+        Vector3 point = transform.position;
+        angle *= Mathf.Deg2Rad;
+
+        for (int i = 1; i <= 1; i++)
+        {
+            float _z = transform.position.z + Mathf.Cos(angle / i);
+            float _x = transform.position.x + Mathf.Sin(angle / i);
+            point.x = _x;
+            point.z = _z;
+        }
+        //Instantiate(gameObject, point, Quaternion.identity);
+        _cosinus = Mathf.Cos(angle);
+    }
+
+    public virtual void TestCube6()
+    {
+        if (Input.GetKey(KeyCode.KeypadEnter))
+        {
+        }
     }
 
     private void DoExercise1()
@@ -84,30 +123,5 @@ public class Sample : MonoBehaviour
         {
             Debug.Log(positions[i]);
         }
-    }
-
-    private void FixedUpdate()
-    {
-        if (Input.GetKey(KeyCode.Space))
-        {
-            TestCube();
-        }
-    }
-
-    private void Update()
-    {
-        _time += Time.deltaTime;
-
-        if (_time >= _period)
-            _time = 0;
-        _lerp = (float)(1 - Mathf.Cos(_speed * _time)) / 2;
-
-        transform.position = Vector3.Lerp(start, target, _lerp);
-    }
-
-    private void TestCube()
-    {
-        var probel = new Vector3(x, y, 0);
-        gameObject.transform.position = probel;
     }
 }
