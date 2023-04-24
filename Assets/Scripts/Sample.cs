@@ -6,6 +6,7 @@ public class Sample : MonoBehaviour
 {
     [SerializeField] private List<KeyCode> _jump;
     [SerializeField] private List<KeyCode> _accelerations;
+    [SerializeField] private List<KeyCode> _Destroy;
     [SerializeField] private float x = 1f;
     [SerializeField] private float y = 8f;
 
@@ -14,6 +15,7 @@ public class Sample : MonoBehaviour
     [SerializeField] private float _resultSpeed;
 
     [SerializeField] private float _cosinus;
+
     private float angle = 360;
 
     private void Start()
@@ -26,19 +28,18 @@ public class Sample : MonoBehaviour
     private void Update()
     {
         if (Input.GetKey(KeyCode.Space))
-        {
             TestCube2();
-        }
 
         if (Input.GetKey(KeyCode.W))
-        {
             TestCube3();
-        }
 
         //if (Input.GetMouseButton(0))
         //{
         TestCube4Cosinus();
         //}
+
+        if (Input.GetKey(KeyCode.D))
+            TestCube8();
     }
 
     private void TestCube2()
@@ -66,6 +67,11 @@ public class Sample : MonoBehaviour
         }
         Instantiate(gameObject, point, Quaternion.identity);
         _cosinus = Mathf.Cos(angle);
+    }
+
+    private void TestCube8()
+    {
+        Destroy(gameObject);
     }
 
     private void DoExercise1()

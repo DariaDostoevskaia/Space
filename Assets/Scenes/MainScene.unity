@@ -871,6 +871,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _jump: 20000000
   _accelerations: 77000000
+  _Destroy: 64000000
   x: 2
   y: 3
   _acceleration: 2

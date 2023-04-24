@@ -20,13 +20,9 @@ public class Enter : MonoBehaviour
         if (Input.GetKey(KeyCode.KeypadEnter))
         {
             if (!gameObject.activeSelf)
-            {
                 gameObject.SetActive(true);
-            }
             else
-            {
                 gameObject.SetActive(false);
-            }
         }
     }
 }
