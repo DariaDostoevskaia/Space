@@ -39,8 +39,6 @@ public class Sample : MonoBehaviour
         //{
         TestCube4Cosinus();
         //}
-
-        TestCube6();
     }
 
     private void TestCube2()
@@ -66,15 +64,8 @@ public class Sample : MonoBehaviour
             point.x = _x;
             point.z = _z;
         }
-        //Instantiate(gameObject, point, Quaternion.identity);
+        Instantiate(gameObject, point, Quaternion.identity);
         _cosinus = Mathf.Cos(angle);
-    }
-
-    public virtual void TestCube6()
-    {
-        if (Input.GetKey(KeyCode.KeypadEnter))
-        {
-        }
     }
 
     private void DoExercise1()
