@@ -17,12 +17,8 @@ namespace SpaceGame.Player
         [SerializeField] private List<KeyCode> _leftButtons;
         [SerializeField] private List<KeyCode> _rightButtons;
 
-        [SerializeField] private Laser _laser;
-        [SerializeField] private float _laserDistance;
-        [SerializeField] private float _timeBetweenFires;
         [SerializeField] private List<KeyCode> _shootButtons;
 
-        private float _timeNextFire;
         private float _currentSpeed;
         private Vector3 _lastMovement;
         private Vector3 _movement;
@@ -35,7 +31,7 @@ namespace SpaceGame.Player
                 : Space.World;
         }
 
-        private void Update()
+        protected override void OnUpdate()
         {
             _movement += GetDirection(_upButtons, Vector3.up);
             _movement += GetDirection(_downButtons, Vector3.down);
@@ -48,21 +44,11 @@ namespace SpaceGame.Player
 
             foreach (var element in _shootButtons)
             {
-                if (Input.GetKey(element)
-                    && _timeNextFire < 0)
+                if (Input.GetKey(element))
                 {
-                    _timeNextFire = _timeBetweenFires;
                     ShootLaser();
                 }
             }
-            _timeNextFire -= Time.deltaTime;
-        }
-
-        private void ShootLaser()
-        {
-            float positionX = transform.position.x;
-            float positionY = transform.position.y;
-            Instantiate(_laser, new Vector3(positionX, positionY, 0), transform.rotation);
         }
 
         private void FixedUpdate()
