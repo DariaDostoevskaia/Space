@@ -3,26 +3,30 @@ using UnityEngine;
 
 public class Enter : MonoBehaviour
 {
-    [SerializeField] private List<KeyCode> _Enter;
+    [SerializeField] private GameObject _cube;
 
     private void Start()
     {
         //var sample = GetComponent<Sample>();
 
-        //sample.
-        TestCube6();
+        //sample.TestCube6();
         //sample.enabled = false; //отключить сэмпл
         //Destroy(gameObject);
     }
 
+    private void Update()
+    {
+        TestCube6();
+    }
+
     public virtual void TestCube6()
     {
-        if (Input.GetKey(KeyCode.KeypadEnter))
+        if (Input.GetKeyDown(KeyCode.Return))
         {
-            if (!gameObject.activeSelf)
-                gameObject.SetActive(true);
+            if (!_cube.activeSelf)
+                _cube.SetActive(true);
             else
-                gameObject.SetActive(false);
+                _cube.SetActive(false);
         }
     }
 }
