@@ -4,63 +4,27 @@ using Random = UnityEngine.Random;
 
 public class Sample : MonoBehaviour
 {
-    [SerializeField] private List<KeyCode> _jump;
-    [SerializeField] private List<KeyCode> _Destroy;
     [SerializeField] private float x = 1f;
     [SerializeField] private float y = 8f;
 
     [SerializeField] private float _resultSpeed;
 
-    [SerializeField] private float _cosinus;
-
-    private float angle = 360;
-
     private void Start()
     {
         //DoExercise1();
         //DoExercise2();
-        //TestCube4Cosinus();
     }
 
     private void Update()
     {
         if (Input.GetKey(KeyCode.Space))
             TestCube2();
-
-        if (Input.GetMouseButton(0))
-        {
-            TestCube4Cosinus();
-        }
-
-        if (Input.GetKey(KeyCode.D))
-            TestCube8();
     }
 
     private void TestCube2()
     {
         var probel = new Vector3(x, y, 0);
         gameObject.transform.position = probel;
-    }
-
-    private void TestCube4Cosinus()
-    {
-        Vector3 point = transform.position;
-        angle *= Mathf.Deg2Rad;
-
-        for (int i = 1; i <= 1; i++)
-        {
-            float _z = transform.position.z + Mathf.Cos(angle / i);
-            float _x = transform.position.x + Mathf.Sin(angle / i);
-            point.x = _x;
-            point.z = _z;
-        }
-        //Instantiate(gameObject, point, Quaternion.identity);
-        _cosinus = Mathf.Cos(angle);
-    }
-
-    private void TestCube8()
-    {
-        Destroy(gameObject);
     }
 
     private void DoExercise1()
