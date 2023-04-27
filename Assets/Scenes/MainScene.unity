@@ -306,20 +306,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 80539748ba8204c40b0668e5f7a69bbe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _maxHealth: 100
+  _maxHealth: 50
   _laser: {fileID: 148252914171446206, guid: 1de27372b7edba942b659f5486c183d8, type: 3}
-  _laserDistance: 0.2
   _timeBetweenFires: 0.3
+  minimumHeight: 6.19
+  maximumHeight: -6.19
+  minimumWidth: 12.03
+  maximumWidth: -12.03
   _playerSpeed: 0.1
   _inertia: 0.3
   _movementBowShip: 0
-  _upButtons: 08010000
-  _downButtons: 02010000
-  _leftButtons: 04010000
-  _rightButtons: 06010000
-  _shootButtons: 05010000
-  _rotationLeftButton: 07010000
-  _rotationRightButton: 09010000
+  _upButtons: 11010000
+  _downButtons: 12010000
+  _leftButtons: 14010000
+  _rightButtons: 13010000
+  _shootButtons: 70000000
+  _rotationLeftButton: 6c000000
+  _rotationRightButton: 6b000000
 --- !u!61 &517149904
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -840,7 +843,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1555618446}
   m_LocalRotation: {x: -0.000003470108, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -7.23, y: 0.83, z: -0}
+  m_LocalPosition: {x: -9.53, y: 0.23, z: 0}
   m_LocalScale: {x: 0.1, y: 0.1, z: 0.1}
   m_ConstrainProportionsScale: 1
   m_Children: []
@@ -859,10 +862,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bbe1ff258fed33642bd9930fdbf41600, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _maxHealth: 100
+  _maxHealth: 50
   _laser: {fileID: 148252914171446206, guid: 1de27372b7edba942b659f5486c183d8, type: 3}
-  _laserDistance: 0.2
   _timeBetweenFires: 0.3
+  minimumHeight: 6.19
+  maximumHeight: -6.19
+  minimumWidth: 12.03
+  maximumWidth: -12.03
   _playerSpeed: 0.1
   _inertia: 0.3
   _movementBowShip: 1

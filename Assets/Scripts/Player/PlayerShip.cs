@@ -1,5 +1,4 @@
 using SpaceGame.Ship;
-using SpaceGame.Weapon;
 using System.Collections.Generic;
 using UnityEngine;
 using Vector3 = UnityEngine.Vector3;
@@ -90,6 +89,16 @@ namespace SpaceGame.Player
 
             transform.Translate(_lastMovement * _currentSpeed, _movementRelative);
             _currentSpeed *= _inertia;
+        }
+
+        private bool _IsIgnore(GameObject obj)
+        {
+            if ((1 << obj.layer) != 0)
+            {
+                return true;
+            }
+
+            return false;
         }
     }
 }
