@@ -306,7 +306,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 80539748ba8204c40b0668e5f7a69bbe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _maxHealth: 10
+  _maxHealth: 100
   _laser: {fileID: 148252914171446206, guid: 1de27372b7edba942b659f5486c183d8, type: 3}
   _laserDistance: 0.2
   _timeBetweenFires: 0.3
@@ -379,7 +379,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: 2b60c9903e1ecad48a6d362817847fd8, type: 3}
   m_PlayOnAwake: 1
-  m_Volume: 1
+  m_Volume: 0.054
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -582,7 +582,7 @@ AudioSource:
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
-  Priority: 128
+  Priority: 38
   DopplerLevel: 1
   MinDistance: 9.477147
   MaxDistance: 500
@@ -859,7 +859,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bbe1ff258fed33642bd9930fdbf41600, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _maxHealth: 10
+  _maxHealth: 100
   _laser: {fileID: 148252914171446206, guid: 1de27372b7edba942b659f5486c183d8, type: 3}
   _laserDistance: 0.2
   _timeBetweenFires: 0.3
@@ -930,7 +930,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: 2b60c9903e1ecad48a6d362817847fd8, type: 3}
   m_PlayOnAwake: 1
-  m_Volume: 1
+  m_Volume: 0.047
   m_Pitch: 1
   Loop: 0
   Mute: 0
