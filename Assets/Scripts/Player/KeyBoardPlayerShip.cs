@@ -9,9 +9,10 @@ namespace SpaceGame.Player
         [SerializeField] private List<KeyCode> _rotationLeftButton;
         [SerializeField] private List<KeyCode> _rotationRightButton;
 
-        private void Start()
+        protected override void OnStart()
         {
             _rotation = transform.rotation;
+            base.OnStart();
         }
 
         protected override void Rotation()

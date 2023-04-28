@@ -1,19 +1,20 @@
+using SpaceGame.Audio;
 using SpaceGame.Player;
 using SpaceGame.Weapon;
 using UnityEngine;
 
 namespace SpaceGame.Ship
 {
-    [RequireComponent(typeof(AudioSource))]
     public abstract class SpaceShip : MonoBehaviour
     {
         [SerializeField] private float _maxHealth;
         [SerializeField] private Laser _laser;
         [SerializeField] private float _timeBetweenFires;
+        [SerializeField] private AudioClip _destroyAudio;
+
         private float _currentHealth;
 
         //private bool _canShoot = true;
-        private AudioSource _audioSource;
 
         private float _timeNextFire;
 
@@ -25,7 +26,7 @@ namespace SpaceGame.Ship
         private void Start()
         {
             _currentHealth = _maxHealth;
-            _audioSource = GetComponent<AudioSource>();
+
             OnStart();
         }
 
@@ -96,8 +97,7 @@ namespace SpaceGame.Ship
 
         private void OnDestroy()
         {
-            _audioSource.Play();
-            //пишет ошибку!!!!!!!!
+            AudioController.Play(_destroyAudio);
         }
 
         //public void OnPointerEnter(PointerEventData eventData)

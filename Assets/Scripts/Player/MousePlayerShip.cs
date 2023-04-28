@@ -8,9 +8,10 @@ namespace SpaceGame.Player
         private Quaternion _rotation;
         private Camera _camera;
 
-        private void Start()
+        protected override void OnStart()
         {
             _camera = Camera.main;
+            base.OnStart();
         }
 
         protected override void HandleTargetRotation()
