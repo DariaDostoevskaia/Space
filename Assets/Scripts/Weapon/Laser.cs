@@ -1,3 +1,6 @@
+using SpaceGame.Player;
+using SpaceGame.Ship;
+using System;
 using UnityEngine;
 
 namespace SpaceGame.Weapon
@@ -7,6 +10,7 @@ namespace SpaceGame.Weapon
         [SerializeField] private float _lifeTime = 2f;
         [SerializeField] private float _speed = 5f;
         [SerializeField] private float _damage = 1f;
+        public string OwnerTag { get; private set; }
 
         private void Start()
         {
@@ -21,6 +25,11 @@ namespace SpaceGame.Weapon
         public float GetDamage()
         {
             return _damage;
+        }
+
+        public void SetOwner(string ownerTag)
+        {
+            OwnerTag = ownerTag;
         }
     }
 }
