@@ -10,37 +10,41 @@ namespace SpaceGame.Enemy
         [SerializeField] private float _speed = 1.5f;
         [SerializeField] private float _firstShootDelay = 3;
         private PlayerShip _player;
-        private Rigidbody2D _rigidbody;
+        private PlayerShip[] _players;
         private Vector3 _delta;
-        private bool _IsRightDirection;
+        private Quaternion _rotation;
 
         protected override void OnUpdate()
         {
-            //if (_player == null)
-            //{
-            //    return;
-            //}
-
             _delta = _player.transform.position - transform.position;
             _delta.Normalize();
         }
 
-        private void FixedUpdate()
+        protected override void Movement()
         {
             transform.position = transform.position + _delta * _speed;
-            //if (_IsRightDirection)
-            //{
-            //    _rigidbody.velocity = Vector2.right * _speed;
-            //}
-            //else
-            //{
-            //    _rigidbody.velocity = Vector2.left * _speed;
-            //}
         }
 
-        public void SetTarget(PlayerShip playerShip)
+        protected override void HandleTargetRotation()
         {
-            _player = playerShip;
+            var playerPosition = _player.transform.position;
+            var shipPosition = transform.position;
+            var dx = shipPosition.x - playerPosition.x;
+            var dy = shipPosition.y - playerPosition.y;
+            var angle = Mathf.Atan2(dy, dx) * Mathf.Rad2Deg;
+            var euler = new Vector3(0, 0, angle + 90);
+            _rotation = Quaternion.Euler(euler);
+        }
+
+        protected override void Rotation()
+        {
+            transform.rotation = _rotation;
+        }
+
+        public void SetTargets(PlayerShip[] players)
+        {
+            _players = players;
+            //FindRandomPlayers
             StartCoroutine(ShootCoroutine());
         }
 

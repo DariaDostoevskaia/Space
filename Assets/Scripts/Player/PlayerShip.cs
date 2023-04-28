@@ -39,8 +39,6 @@ namespace SpaceGame.Player
 
             _movement.Normalize();
 
-            HandleTargetRotation();
-
             foreach (var element in _shootButtons)
             {
                 if (Input.GetKey(element))
@@ -49,16 +47,6 @@ namespace SpaceGame.Player
                 }
             }
         }
-
-        private void FixedUpdate()
-        {
-            Rotation();
-            Movement();
-        }
-
-        protected abstract void Rotation();
-
-        protected abstract void HandleTargetRotation();
 
         protected Vector3 GetDirection(List<KeyCode> buttons, Vector3 direction)
         {
@@ -73,7 +61,7 @@ namespace SpaceGame.Player
             return Vector3.zero;
         }
 
-        private void Movement()
+        protected override void Movement()
         {
             if (_movement.magnitude > 0)
             {

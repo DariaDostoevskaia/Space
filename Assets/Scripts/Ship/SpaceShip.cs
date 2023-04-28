@@ -1,5 +1,4 @@
 using SpaceGame.Audio;
-using SpaceGame.Player;
 using SpaceGame.Weapon;
 using UnityEngine;
 
@@ -13,9 +12,6 @@ namespace SpaceGame.Ship
         [SerializeField] private AudioClip _destroyAudio;
 
         private float _currentHealth;
-
-        //private bool _canShoot = true;
-
         private float _timeNextFire;
 
         //public float minimumHeight; -6.19
@@ -42,8 +38,21 @@ namespace SpaceGame.Ship
             //    && maximumWidth > transform.position.x)
             //    transform.position = new Vector3(x: 0, y: 0, z: 0);
 
+            HandleTargetRotation();
             OnUpdate();
         }
+
+        private void FixedUpdate()
+        {
+            Rotation();
+            Movement();
+        }
+
+        protected abstract void Movement();
+
+        protected abstract void Rotation();
+
+        protected abstract void HandleTargetRotation();
 
         protected virtual void OnUpdate()
         {
@@ -60,7 +69,8 @@ namespace SpaceGame.Ship
             _timeNextFire = _timeBetweenFires;
             float positionX = transform.position.x;
             float positionY = transform.position.y;
-            Instantiate(_laser, new Vector3(positionX, positionY, 0), transform.rotation);
+            var laser = Instantiate(_laser, new Vector3(positionX, positionY, 0), transform.rotation);
+            laser.SetOwner(gameObject.tag);
         }
 
         private bool IsFireReady()
@@ -73,19 +83,15 @@ namespace SpaceGame.Ship
             return _currentHealth > 0;
         }
 
-        private void OnCollisionEnter2D(Collision2D collision)
+        private void OnTriggerEnter2D(Collider2D collision)
         {
             var laser = collision.gameObject.GetComponent<Laser>();
             if (laser == null)
                 return;
+            if (gameObject.CompareTag(laser.OwnerTag))
+                return;
 
             Destroy(laser.gameObject);
-
-            ////добавлено ,?
-            //if (!_canShoot)
-            //{
-            //    return;
-            //}
 
             _currentHealth -= laser.GetDamage();
 
