@@ -11,9 +11,14 @@ namespace SpaceGame.Audio
         private void Start()
         {
             if (_instance == null)
+            {
                 _instance = this;
+            }
             else
+            {
                 Destroy(gameObject);
+                return;
+            }
 
             DontDestroyOnLoad(gameObject);
             _audioSource = GetComponent<AudioSource>();
@@ -21,6 +26,8 @@ namespace SpaceGame.Audio
 
         public static void Play(AudioClip audioClip)
         {
+            if (audioClip == null)
+                return;
             _instance._audioSource.PlayOneShot(audioClip);
         }
     }
