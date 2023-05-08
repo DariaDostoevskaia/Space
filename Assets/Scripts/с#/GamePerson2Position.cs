@@ -8,7 +8,7 @@ public class GamePerson2Position : MonoBehaviour
     {
         if (Input.GetKey(KeyCode.Space))
         {
-            _position.y += _position.x;
+            _position.x += _position.y;
             Debug.Log($"{_position.x}, {_position.y}, {_position.z}");
         }
     }
