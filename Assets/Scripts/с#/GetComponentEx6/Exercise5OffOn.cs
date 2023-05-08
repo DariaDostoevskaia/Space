@@ -1,12 +1,12 @@
 using UnityEngine;
 
-public class EnterOn : MonoBehaviour
+public class Exercise5OffOn : MonoBehaviour
 {
-    private EnterOff _keyOn;
+    private Switch _keyOn;
 
     private void Start()
     {
-        _keyOn = GetComponent<EnterOff>();
+        _keyOn = GetComponent<Switch>();
     }
 
     private void Update()
