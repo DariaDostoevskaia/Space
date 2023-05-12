@@ -44,30 +44,26 @@ namespace SpaceGame.Enemy
         public void SetTargets(PlayerShip[] players)
         {
             _players = players;
-            //FindRandomPlayers
+
+            if (players == null)
+                return;
+            //for (int i = 0; i < 2; i++)
+            //{
+            //    transform.LookAt(players);
+
+            //    if (Vector3.Distance(transform.position, players.position) >= MinDist)
+            //    {
+            //        transform.position += _speed * Time.deltaTime * transform.forward;
+
+            //        if (Vector3.Distance(transform.position, players.transform.position) <= MaxDist)
+            //        {
+            //            // Put what do you want to happen here
+            //        }
+            //    }
+            //}
 
             StartCoroutine(ShootCoroutine());
         }
-
-        //private PlayerShip FindRandomPlayer()
-        //{
-        //    var playerIndex = Random.Range(0, 2);
-
-        //    switch (playerIndex)
-        //    {
-        //        case 0:
-        //            return _firstPlayer != null
-        //                        ? _firstPlayer
-        //                        : _secondPlayer;
-
-        //        case 1:
-        //            return _secondPlayer != null
-        //                        ? _secondPlayer
-        //                        : _firstPlayer;
-
-        //        default: throw new System.Exception();
-        //    }
-        //}
 
         private IEnumerator ShootCoroutine()
         {

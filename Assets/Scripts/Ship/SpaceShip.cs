@@ -14,10 +14,10 @@ namespace SpaceGame.Ship
         private float _currentHealth;
         private float _timeNextFire;
 
-        public float minimumHeight;/* -6.19*/
-        public float maximumHeight;/* 6.19*/
-        public float minimumWidth;/* -12.03*/
-        public float maximumWidth;/* 12.03*/
+        public float minimumHeight;
+        public float maximumHeight;
+        public float minimumWidth;
+        public float maximumWidth;
 
         private void Start()
         {
@@ -28,19 +28,10 @@ namespace SpaceGame.Ship
 
         private void Update()
         {
-            if (minimumHeight < transform.position.y)
-                transform.position = new Vector3(x: transform.position.x, y: maximumHeight);
-            if (maximumHeight > transform.position.y)
-                transform.position = new Vector3(x: transform.position.x, y: minimumHeight);
-
-            if (minimumWidth > transform.position.x)
-                transform.position = new Vector3(x: maximumWidth, y: transform.position.y);
-            if (maximumWidth < transform.position.x)
-                transform.position = new Vector3(x: minimumWidth, y: transform.position.y);
-
             _timeNextFire -= Time.deltaTime;
 
             HandleTargetRotation();
+            //IsMirrorField();
             OnUpdate();
         }
 
@@ -75,6 +66,21 @@ namespace SpaceGame.Ship
             laser.SetOwner(gameObject.tag);
         }
 
+        private void IsMirrorField()
+        {
+            if (minimumHeight < transform.position.y)
+                transform.position = new Vector3(x: transform.position.x, y: maximumHeight);
+
+            if (maximumHeight < transform.position.y)
+                transform.position = new Vector3(x: transform.position.x, y: minimumHeight);
+
+            if (minimumWidth < transform.position.x)
+                transform.position = new Vector3(x: maximumWidth, y: transform.position.y);
+
+            if (maximumWidth < transform.position.x)
+                transform.position = new Vector3(x: minimumWidth, y: transform.position.y);
+        }
+
         private bool IsFireReady()
         {
             return _timeNextFire < 0;
@@ -107,15 +113,5 @@ namespace SpaceGame.Ship
         {
             AudioController.Play(_destroyAudio);
         }
-
-        //public void OnPointerEnter(PointerEventData eventData)
-        //{
-        //    _canShoot = false;
-        //}
-
-        //public void OnPointerExit(PointerEventData eventData)
-        //{
-        //    _canShoot = true;
-        //}
     }
 }
