@@ -45,8 +45,29 @@ namespace SpaceGame.Enemy
         {
             _players = players;
             //FindRandomPlayers
+
             StartCoroutine(ShootCoroutine());
         }
+
+        //private PlayerShip FindRandomPlayer()
+        //{
+        //    var playerIndex = Random.Range(0, 2);
+
+        //    switch (playerIndex)
+        //    {
+        //        case 0:
+        //            return _firstPlayer != null
+        //                        ? _firstPlayer
+        //                        : _secondPlayer;
+
+        //        case 1:
+        //            return _secondPlayer != null
+        //                        ? _secondPlayer
+        //                        : _firstPlayer;
+
+        //        default: throw new System.Exception();
+        //    }
+        //}
 
         private IEnumerator ShootCoroutine()
         {

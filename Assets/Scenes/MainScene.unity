@@ -309,6 +309,10 @@ MonoBehaviour:
   _laser: {fileID: 148252914171446206, guid: 1de27372b7edba942b659f5486c183d8, type: 3}
   _timeBetweenFires: 0.3
   _destroyAudio: {fileID: 8300000, guid: 2b60c9903e1ecad48a6d362817847fd8, type: 3}
+  minimumHeight: 6.19
+  maximumHeight: -6.19
+  minimumWidth: 12.03
+  maximumWidth: -12.03
   _playerSpeed: 0.1
   _inertia: 0.3
   _movementBowShip: 0
@@ -906,6 +910,10 @@ MonoBehaviour:
   _laser: {fileID: 148252914171446206, guid: 1de27372b7edba942b659f5486c183d8, type: 3}
   _timeBetweenFires: 0.3
   _destroyAudio: {fileID: 8300000, guid: 2b60c9903e1ecad48a6d362817847fd8, type: 3}
+  minimumHeight: 6.19
+  maximumHeight: -6.19
+  minimumWidth: 12.03
+  maximumWidth: -12.03
   _playerSpeed: 0.1
   _inertia: 0.3
   _movementBowShip: 1

@@ -14,10 +14,10 @@ namespace SpaceGame.Ship
         private float _currentHealth;
         private float _timeNextFire;
 
-        //public float minimumHeight; -6.19
-        //public float maximumHeight; 6.19
-        //public float minimumWidth; -12.03
-        //public float maximumWidth; 12.03
+        public float minimumHeight;/* -6.19*/
+        public float maximumHeight;/* 6.19*/
+        public float minimumWidth;/* -12.03*/
+        public float maximumWidth;/* 12.03*/
 
         private void Start()
         {
@@ -28,15 +28,17 @@ namespace SpaceGame.Ship
 
         private void Update()
         {
+            if (minimumHeight < transform.position.y)
+                transform.position = new Vector3(x: transform.position.x, y: maximumHeight);
+            if (maximumHeight > transform.position.y)
+                transform.position = new Vector3(x: transform.position.x, y: minimumHeight);
+
+            if (minimumWidth > transform.position.x)
+                transform.position = new Vector3(x: maximumWidth, y: transform.position.y);
+            if (maximumWidth < transform.position.x)
+                transform.position = new Vector3(x: minimumWidth, y: transform.position.y);
+
             _timeNextFire -= Time.deltaTime;
-
-            //if (minimumHeight < transform.position.y
-            //    && minimumHeight > transform.position.y)
-            //    transform.position = new Vector3(x: 0, y: 0, z: 0);
-
-            //if (maximumWidth < transform.position.x
-            //    && maximumWidth > transform.position.x)
-            //    transform.position = new Vector3(x: 0, y: 0, z: 0);
 
             HandleTargetRotation();
             OnUpdate();
