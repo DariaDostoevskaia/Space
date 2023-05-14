@@ -14,10 +14,13 @@ namespace SpaceGame.Enemy
         private Vector3 _delta;
         private Quaternion _rotation;
 
+        //private Laser /*GetDamage()*/ _playerDamage;
+
         protected override void OnUpdate()
         {
             _delta = _player.transform.position - transform.position;
             _delta.Normalize();
+            SetTargets(_players);
         }
 
         protected override void Movement()
@@ -62,6 +65,7 @@ namespace SpaceGame.Enemy
             //    }
             //}
 
+            //_playerDamage /* = GetDamage();*/
             StartCoroutine(ShootCoroutine());
         }
 

@@ -31,7 +31,7 @@ namespace SpaceGame.Ship
             _timeNextFire -= Time.deltaTime;
 
             HandleTargetRotation();
-            //IsMirrorField();
+            //Map();
             OnUpdate();
         }
 
@@ -66,7 +66,7 @@ namespace SpaceGame.Ship
             laser.SetOwner(gameObject.tag);
         }
 
-        private void IsMirrorField()
+        private void Map()
         {
             if (minimumHeight < transform.position.y)
                 transform.position = new Vector3(x: transform.position.x, y: maximumHeight);
