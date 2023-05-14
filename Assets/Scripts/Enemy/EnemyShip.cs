@@ -1,6 +1,7 @@
 using SpaceGame.Player;
 using SpaceGame.Ship;
 using System.Collections;
+using System.Linq;
 using UnityEngine;
 
 namespace SpaceGame.Enemy
@@ -14,13 +15,24 @@ namespace SpaceGame.Enemy
         private Vector3 _delta;
         private Quaternion _rotation;
 
-        //private Laser /*GetDamage()*/ _playerDamage;
-
         protected override void OnUpdate()
         {
+            if (_player == null)
+            {
+                _player = FindRandomAlivePlayer(_players);
+                return;
+            }
+
             _delta = _player.transform.position - transform.position;
             _delta.Normalize();
-            SetTargets(_players);
+        }
+
+        public void SetTargets(PlayerShip[] players)
+        {
+            _players = players;
+            _player = FindRandomAlivePlayer(players);
+
+            StartCoroutine(ShootCoroutine());
         }
 
         protected override void Movement()
@@ -30,6 +42,8 @@ namespace SpaceGame.Enemy
 
         protected override void HandleTargetRotation()
         {
+            if (_player == null)
+                return;
             var playerPosition = _player.transform.position;
             var shipPosition = transform.position;
             var dx = shipPosition.x - playerPosition.x;
@@ -44,29 +58,25 @@ namespace SpaceGame.Enemy
             transform.rotation = _rotation;
         }
 
-        public void SetTargets(PlayerShip[] players)
+        protected override bool IsFireReady()
         {
-            _players = players;
+            return base.IsFireReady() && _player != null;
+        }
 
-            if (players == null)
-                return;
-            //for (int i = 0; i < 2; i++)
-            //{
-            //    transform.LookAt(players);
+        protected override bool IsMovementReady()
+        {
+            return _player != null;
+        }
 
-            //    if (Vector3.Distance(transform.position, players.position) >= MinDist)
-            //    {
-            //        transform.position += _speed * Time.deltaTime * transform.forward;
-
-            //        if (Vector3.Distance(transform.position, players.transform.position) <= MaxDist)
-            //        {
-            //            // Put what do you want to happen here
-            //        }
-            //    }
-            //}
-
-            //_playerDamage /* = GetDamage();*/
-            StartCoroutine(ShootCoroutine());
+        private PlayerShip FindRandomAlivePlayer(PlayerShip[] players)
+        {
+            var alivePlayers = players
+                .Where(player => player != null)
+                .ToArray();
+            if (!alivePlayers.Any())
+                return null;
+            var playerIndex = Random.Range(0, alivePlayers.Length);
+            return alivePlayers[playerIndex];
         }
 
         private IEnumerator ShootCoroutine()

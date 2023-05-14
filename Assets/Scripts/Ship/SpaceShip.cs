@@ -14,10 +14,7 @@ namespace SpaceGame.Ship
         private float _currentHealth;
         private float _timeNextFire;
 
-        public float minimumHeight;
-        public float maximumHeight;
-        public float minimumWidth;
-        public float maximumWidth;
+        public float CurrentHealth => _currentHealth;
 
         private void Start()
         {
@@ -31,12 +28,13 @@ namespace SpaceGame.Ship
             _timeNextFire -= Time.deltaTime;
 
             HandleTargetRotation();
-            //Map();
             OnUpdate();
         }
 
         private void FixedUpdate()
         {
+            if (!IsMovementReady())
+                return;
             Rotation();
             Movement();
         }
@@ -66,24 +64,14 @@ namespace SpaceGame.Ship
             laser.SetOwner(gameObject.tag);
         }
 
-        private void Map()
-        {
-            if (minimumHeight < transform.position.y)
-                transform.position = new Vector3(x: transform.position.x, y: maximumHeight);
-
-            if (maximumHeight < transform.position.y)
-                transform.position = new Vector3(x: transform.position.x, y: minimumHeight);
-
-            if (minimumWidth < transform.position.x)
-                transform.position = new Vector3(x: maximumWidth, y: transform.position.y);
-
-            if (maximumWidth < transform.position.x)
-                transform.position = new Vector3(x: minimumWidth, y: transform.position.y);
-        }
-
-        private bool IsFireReady()
+        protected virtual bool IsFireReady()
         {
             return _timeNextFire < 0;
+        }
+
+        protected virtual bool IsMovementReady()
+        {
+            return true;
         }
 
         private bool IsLife()
