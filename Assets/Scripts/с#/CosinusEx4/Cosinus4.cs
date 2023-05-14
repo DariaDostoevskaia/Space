@@ -7,7 +7,7 @@ public class Cosinus4 : MonoBehaviour
 
     private void Update()
     {
-        Vector3 point = transform.position;
+        _point = new Vector3(transform.position.x, transform.position.y);
         if (Input.GetMouseButtonDown(0))
         {
             _cosinus = Mathf.Cos(_point.x);
