@@ -14,10 +14,7 @@ namespace SpaceGame.Ship
         private float _currentHealth;
         private float _timeNextFire;
 
-        //public float minimumHeight; -6.19
-        //public float maximumHeight; 6.19
-        //public float minimumWidth; -12.03
-        //public float maximumWidth; 12.03
+        public float CurrentHealth => _currentHealth;
 
         private void Start()
         {
@@ -30,20 +27,14 @@ namespace SpaceGame.Ship
         {
             _timeNextFire -= Time.deltaTime;
 
-            //if (minimumHeight < transform.position.y
-            //    && minimumHeight > transform.position.y)
-            //    transform.position = new Vector3(x: 0, y: 0, z: 0);
-
-            //if (maximumWidth < transform.position.x
-            //    && maximumWidth > transform.position.x)
-            //    transform.position = new Vector3(x: 0, y: 0, z: 0);
-
             HandleTargetRotation();
             OnUpdate();
         }
 
         private void FixedUpdate()
         {
+            if (!IsMovementReady())
+                return;
             Rotation();
             Movement();
         }
@@ -73,9 +64,14 @@ namespace SpaceGame.Ship
             laser.SetOwner(gameObject.tag);
         }
 
-        private bool IsFireReady()
+        protected virtual bool IsFireReady()
         {
             return _timeNextFire < 0;
+        }
+
+        protected virtual bool IsMovementReady()
+        {
+            return true;
         }
 
         private bool IsLife()
@@ -105,15 +101,5 @@ namespace SpaceGame.Ship
         {
             AudioController.Play(_destroyAudio);
         }
-
-        //public void OnPointerEnter(PointerEventData eventData)
-        //{
-        //    _canShoot = false;
-        //}
-
-        //public void OnPointerExit(PointerEventData eventData)
-        //{
-        //    _canShoot = true;
-        //}
     }
 }

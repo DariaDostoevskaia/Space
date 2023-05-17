@@ -1,6 +1,3 @@
-using SpaceGame.Player;
-using SpaceGame.Ship;
-using System;
 using UnityEngine;
 
 namespace SpaceGame.Weapon

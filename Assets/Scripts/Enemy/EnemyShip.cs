@@ -1,6 +1,7 @@
 using SpaceGame.Player;
 using SpaceGame.Ship;
 using System.Collections;
+using System.Linq;
 using UnityEngine;
 
 namespace SpaceGame.Enemy
@@ -16,8 +17,22 @@ namespace SpaceGame.Enemy
 
         protected override void OnUpdate()
         {
+            if (_player == null)
+            {
+                _player = FindRandomAlivePlayer(_players);
+                return;
+            }
+
             _delta = _player.transform.position - transform.position;
             _delta.Normalize();
+        }
+
+        public void SetTargets(PlayerShip[] players)
+        {
+            _players = players;
+            _player = FindRandomAlivePlayer(players);
+
+            StartCoroutine(ShootCoroutine());
         }
 
         protected override void Movement()
@@ -27,6 +42,8 @@ namespace SpaceGame.Enemy
 
         protected override void HandleTargetRotation()
         {
+            if (_player == null)
+                return;
             var playerPosition = _player.transform.position;
             var shipPosition = transform.position;
             var dx = shipPosition.x - playerPosition.x;
@@ -41,11 +58,25 @@ namespace SpaceGame.Enemy
             transform.rotation = _rotation;
         }
 
-        public void SetTargets(PlayerShip[] players)
+        protected override bool IsFireReady()
         {
-            _players = players;
-            //FindRandomPlayers
-            StartCoroutine(ShootCoroutine());
+            return base.IsFireReady() && _player != null;
+        }
+
+        protected override bool IsMovementReady()
+        {
+            return _player != null;
+        }
+
+        private PlayerShip FindRandomAlivePlayer(PlayerShip[] players)
+        {
+            var alivePlayers = players
+                .Where(player => player != null)
+                .ToArray();
+            if (!alivePlayers.Any())
+                return null;
+            var playerIndex = Random.Range(0, alivePlayers.Length);
+            return alivePlayers[playerIndex];
         }
 
         private IEnumerator ShootCoroutine()

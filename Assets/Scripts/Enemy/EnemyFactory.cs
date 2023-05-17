@@ -1,6 +1,8 @@
 using SpaceGame.Enemy;
 using SpaceGame.Player;
 using System.Collections;
+using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class EnemyFactory : MonoBehaviour
@@ -22,36 +24,22 @@ public class EnemyFactory : MonoBehaviour
         StartCoroutine(SpawnEnemyCoroutine());
     }
 
+    private bool HasAlivePlayer()
+    {
+        return players
+            .Any(player => player != null
+            && player.CurrentHealth > 0);
+    }
+
     private IEnumerator SpawnEnemyCoroutine()
     {
-        while (true)
+        while (HasAlivePlayer())
         {
             yield return _wait;
             var enemyShip = CreateEnemyShip();
-            //var player = FindRandomPlayer();
             enemyShip.SetTargets(players);
         }
     }
-
-    //private PlayerShip FindRandomPlayer()
-    //{
-    //    var playerIndex = Random.Range(0, 2);
-
-    //    switch (playerIndex)
-    //    {
-    //        case 0:
-    //            return _firstPlayer != null
-    //                        ? _firstPlayer
-    //                        : _secondPlayer;
-
-    //        case 1:
-    //            return _secondPlayer != null
-    //                        ? _secondPlayer
-    //                        : _firstPlayer;
-
-    //        default: throw new System.Exception();
-    //    }
-    //}
 
     private EnemyShip CreateEnemyShip()
     {

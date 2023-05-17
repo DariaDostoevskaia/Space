@@ -18,6 +18,11 @@ namespace SpaceGame.Player
 
         [SerializeField] private List<KeyCode> _shootButtons;
 
+        [SerializeField] private float _minimumHeight = -6.19f;
+        [SerializeField] private float _maximumHeight = 6.19f;
+        [SerializeField] private float _minimumWidth = -12.03f;
+        [SerializeField] private float _maximumWidth = 12.03f;
+
         private float _currentSpeed;
         private Vector3 _lastMovement;
         private Vector3 _movement;
@@ -63,6 +68,7 @@ namespace SpaceGame.Player
 
         protected override void Movement()
         {
+            MoveThroughScreen();
             if (_movement.magnitude > 0)
             {
                 _currentSpeed = _playerSpeed;
@@ -79,14 +85,19 @@ namespace SpaceGame.Player
             _currentSpeed *= _inertia;
         }
 
-        private bool _IsIgnore(GameObject obj)
+        private void MoveThroughScreen()
         {
-            if ((1 << obj.layer) != 0)
-            {
-                return true;
-            }
+            if (transform.position.x < _minimumWidth)
+                transform.position = new Vector3(_maximumWidth, transform.position.y, transform.position.z);
 
-            return false;
+            if (transform.position.x > _maximumWidth)
+                transform.position = new Vector3(_minimumWidth, transform.position.y, transform.position.z);
+
+            if (transform.position.y < _minimumHeight)
+                transform.position = new Vector3(transform.position.x, _maximumHeight, transform.position.z);
+
+            if (transform.position.y > _maximumHeight)
+                transform.position = new Vector3(transform.position.x, _minimumHeight, transform.position.z);
         }
     }
 }

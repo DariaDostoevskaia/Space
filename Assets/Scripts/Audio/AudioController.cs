@@ -28,6 +28,8 @@ namespace SpaceGame.Audio
         {
             if (audioClip == null)
                 return;
+            if (_instance == null)
+                return;
             _instance._audioSource.PlayOneShot(audioClip);
         }
     }
