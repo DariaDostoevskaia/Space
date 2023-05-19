@@ -4,14 +4,11 @@ public class Game7Object2 : MonoBehaviour
 {
     private void Update()
     {
+        var obj = FindObjectOfType<Space5OnOff>();
+
         if (Input.GetKeyDown(KeyCode.Return))
-        {
-            var obj = FindObjectOfType<Game7Object2>();
-            obj.enabled = false;
-            if (Input.GetKeyDown(KeyCode.Return))
-            {
-                obj.enabled = true;
-            }
-        }
+            obj.enabled = !obj.enabled;
+        else
+            obj.enabled = obj.enabled;
     }
 }

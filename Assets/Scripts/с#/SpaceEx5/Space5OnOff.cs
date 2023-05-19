@@ -6,17 +6,14 @@ public class Space5OnOff : MonoBehaviour
 
     private void Update()
     {
-        TestCube6();
+        IsSwitchComponent();
     }
 
-    public virtual void TestCube6()
+    private void IsSwitchComponent()
     {
         if (Input.GetKeyDown(KeyCode.Space))
-        {
-            if (!_cube.activeSelf)
-                _cube.SetActive(true);
-            else
-                _cube.SetActive(false);
-        }
+            _cube.SetActive(!_cube.activeSelf);
+        else
+            _cube.SetActive(_cube.activeSelf);
     }
 }
