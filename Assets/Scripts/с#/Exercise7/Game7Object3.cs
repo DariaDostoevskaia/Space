@@ -10,9 +10,5 @@ public class Game7Object3 : MonoBehaviour
         {
             _space5OnOff.enabled = !_space5OnOff.enabled;
         }
-        else
-        {
-            _space5OnOff.enabled = _space5OnOff.enabled;
-        }
     }
 }

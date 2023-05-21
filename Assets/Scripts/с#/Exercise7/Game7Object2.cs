@@ -8,7 +8,5 @@ public class Game7Object2 : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Return))
             obj.enabled = !obj.enabled;
-        else
-            obj.enabled = obj.enabled;
     }
 }
