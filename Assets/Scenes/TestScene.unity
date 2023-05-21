@@ -369,6 +369,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 086c8b05fc6ba644887be600c8012c48, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _space5OnOff: {fileID: 1689863030}
 --- !u!4 &333181428
 Transform:
   m_ObjectHideFlags: 0
@@ -409,6 +410,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4d7dd04df3cf4b842b9ee857167a4bc6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _space5OnOff: {fileID: 1689863030}
 --- !u!1 &562356449
 GameObject:
   m_ObjectHideFlags: 0
