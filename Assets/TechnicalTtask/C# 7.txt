@@ -6,6 +6,7 @@ https://ulearn.me/course/linq/Fil_tratsiya_i_preobrazovanie_e0114584-4500-40b2-b
 
 Создай коллекцию List<Vector3> vectors из 5 случайных векторов и передай в метод GetXPositions
 Преобразуй метод GetXPositions, чтобы он использовал LINQ для фильтрации коллекции.
+
 public List<int> GetXPositions(List<Vector3> vectors)
 {
 	var xPositions = new List<int>();
@@ -16,10 +17,12 @@ public List<int> GetXPositions(List<Vector3> vectors)
 	}
 	return xPositions;
 }
+
 3.Skip, ToArray
 https://ulearn.me/course/linq/Take_Skip_ToArray_ToList_11c65f91-8698-48d9-9a97-ba5b42d27133
 
 Преобразуй метод GetXPositions так, чтобы можно было указать сколько элементов последовательности пропустить сначала.
-Измени возвращаймый тип на массив int[]. Преобразуй свой метод, чтобы он возвращал не List<int>, а массив.
+Измени возвращаемый тип на массив int[]. Преобразуй свой метод, чтобы он возвращал не List<int>, а массив.
+
 4. Take
 Преобразуй метод GetXPositions так, чтобы можно было указать сколько элементов последовательности взять сначала.
