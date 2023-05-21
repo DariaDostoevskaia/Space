@@ -1,10 +1,9 @@
-using SpaceGame.Player;
 using SpaceGame.Ship;
 using System.Collections;
 using System.Linq;
 using UnityEngine;
 
-namespace SpaceGame.Enemy
+namespace SpaceGame.Ship
 {
     public class EnemyShip : SpaceShip
     {

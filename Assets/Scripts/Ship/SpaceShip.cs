@@ -1,11 +1,14 @@
 using SpaceGame.Audio;
 using SpaceGame.Weapon;
+using System;
 using UnityEngine;
 
 namespace SpaceGame.Ship
 {
     public abstract class SpaceShip : MonoBehaviour
     {
+        public event Action OnEnemyDestroyed;
+
         [SerializeField] private float _maxHealth;
         [SerializeField] private Laser _laser;
         [SerializeField] private float _timeBetweenFires;
@@ -16,10 +19,13 @@ namespace SpaceGame.Ship
 
         public float CurrentHealth => _currentHealth;
 
-        private void Start()
+        private void Awake()
         {
             _currentHealth = _maxHealth;
+        }
 
+        private void Start()
+        {
             OnStart();
         }
 
@@ -62,6 +68,13 @@ namespace SpaceGame.Ship
             float positionY = transform.position.y;
             var laser = Instantiate(_laser, new Vector3(positionX, positionY, 0), transform.rotation);
             laser.SetOwner(gameObject.tag);
+            laser.OnEnemyDestroyed += DestroyEnemy;
+
+            void DestroyEnemy()
+            {
+                OnEnemyDestroyed?.Invoke();
+                laser.OnEnemyDestroyed -= DestroyEnemy;
+            }
         }
 
         protected virtual bool IsFireReady()
@@ -84,16 +97,20 @@ namespace SpaceGame.Ship
             var laser = collision.gameObject.GetComponent<Laser>();
             if (laser == null)
                 return;
+
             if (gameObject.CompareTag(laser.OwnerTag))
                 return;
-
-            Destroy(laser.gameObject);
 
             _currentHealth -= laser.GetDamage();
 
             if (IsLife())
+            {
+                Destroy(laser.gameObject);
                 return;
+            }
 
+            laser.DestroyEnemy();
+            Destroy(laser.gameObject);
             Destroy(gameObject);
         }
 
