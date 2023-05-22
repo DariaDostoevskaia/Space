@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace SpaceGame.Player
+namespace SpaceGame.Ship
 {
     public class KeyBoardPlayerShip : PlayerShip
     {

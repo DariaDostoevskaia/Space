@@ -1,9 +1,12 @@
+using System;
 using UnityEngine;
 
 namespace SpaceGame.Weapon
 {
     public class Laser : MonoBehaviour
     {
+        public event Action OnEnemyDestroyed;
+
         [SerializeField] private float _lifeTime = 2f;
         [SerializeField] private float _speed = 5f;
         [SerializeField] private float _damage = 1f;
@@ -27,6 +30,11 @@ namespace SpaceGame.Weapon
         public void SetOwner(string ownerTag)
         {
             OwnerTag = ownerTag;
+        }
+
+        public void DestroyEnemy()
+        {
+            OnEnemyDestroyed?.Invoke();
         }
     }
 }

@@ -1,9 +1,8 @@
-using SpaceGame.Ship;
 using System.Collections.Generic;
 using UnityEngine;
 using Vector3 = UnityEngine.Vector3;
 
-namespace SpaceGame.Player
+namespace SpaceGame.Ship
 {
     public abstract class PlayerShip : SpaceShip
     {

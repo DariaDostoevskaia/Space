@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace SpaceGame.Player
+namespace SpaceGame.Ship
 {
     public class MousePlayerShip : PlayerShip
     {
