@@ -9,10 +9,14 @@ namespace SpaceGame.Game
     {
         [SerializeField] private MousePlayerShip _playerShipPrefab;
         [SerializeField] private KeyBoardPlayerShip _player2ShipPrefab;
+
         [SerializeField] private EnemyFactory _enemyFactory;
+
         [SerializeField] private Transform _startedPosition;
+
         [SerializeField] private TextMeshProUGUI _scoreText;
         [SerializeField] private int _scorePerEnemy = 1;
+
         private Player player;
 
         private void Start()

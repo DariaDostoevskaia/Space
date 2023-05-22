@@ -13,6 +13,7 @@ namespace SpaceGame.Ship
         [SerializeField] private Laser _laser;
         [SerializeField] private float _timeBetweenFires;
         [SerializeField] private AudioClip _destroyAudio;
+        [SerializeField] private GameObject _explosion;
 
         private float _currentHealth;
         private float _timeNextFire;
@@ -63,11 +64,16 @@ namespace SpaceGame.Ship
         {
             if (!IsFireReady())
                 return;
+
             _timeNextFire = _timeBetweenFires;
+
             float positionX = transform.position.x;
             float positionY = transform.position.y;
+
             var laser = Instantiate(_laser, new Vector3(positionX, positionY, 0), transform.rotation);
+
             laser.SetOwner(gameObject.tag);
+
             laser.OnEnemyDestroyed += DestroyEnemy;
 
             void DestroyEnemy()
@@ -112,6 +118,7 @@ namespace SpaceGame.Ship
             laser.DestroyEnemy();
             Destroy(laser.gameObject);
             Destroy(gameObject);
+            Instantiate(_explosion, gameObject.transform.position, Quaternion.identity);
         }
 
         private void OnDestroy()
