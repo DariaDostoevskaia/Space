@@ -18,6 +18,9 @@ namespace SpaceGame.Game
         [SerializeField] private TextMeshProUGUI _scoreText;
         [SerializeField] private int _scorePerEnemy = 1;
 
+        [SerializeField] private TextMeshProUGUI _healthText;
+
+        private float _health;
         [SerializeField] private TextMeshProUGUI _enemyShipCountText;
         [SerializeField] private EnemyRepository _enemyRepository;
 
@@ -30,8 +33,10 @@ namespace SpaceGame.Game
             var score = new Score();
             player = new Player(score);
             player.OnScoreAdded += OnScoreAdded;
+            //_health = player.CurrentHealth;
             var firstPlayer = CreatePlayerShip(_playerShipPrefab, player);
             var secondPlayer = CreatePlayerShip(_player2ShipPrefab, player);
+
             _enemyFactory.SetUp(new PlayerShip[] { firstPlayer, secondPlayer });
             _enemyFactory.StartSpawnEnemies();
         }
@@ -45,6 +50,17 @@ namespace SpaceGame.Game
         {
             _scoreText.text = $"Score: {player.GetScore()}";
         }
+
+        private void OnHealthAdded()
+        {
+            _healthText.text = $"Health: {player.GetHealth()}";
+        }
+
+        //private void GetHealth(SpaceShip player)
+        //{
+        //    //_health = player.CurrentHealth;
+        //    //_health = _health.Value;
+        //}
 
         private PlayerShip CreatePlayerShip(PlayerShip playerShipPrefab, Player player)
         {
