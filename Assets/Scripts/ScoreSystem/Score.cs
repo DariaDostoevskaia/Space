@@ -1,6 +1,3 @@
-using System;
-using UnityEngine;
-
 namespace SpaceGame.ScoreSystem
 {
     public class Score
