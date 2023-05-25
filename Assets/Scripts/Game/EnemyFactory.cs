@@ -1,3 +1,4 @@
+using SpaceGame.ScoreSystem;
 using SpaceGame.Ship;
 using System.Collections;
 using System.Linq;
@@ -15,6 +16,9 @@ namespace SpaceGame.Game
         private WaitForSeconds _wait;
         private PlayerShip[] players;
 
+        private EnemyShipCount _enemyShipCount;
+        private int _count = 0;
+
         private void Start()
         {
             _wait = new WaitForSeconds(_spawnDelay);
@@ -30,6 +34,12 @@ namespace SpaceGame.Game
             StartCoroutine(SpawnEnemyCoroutine());
         }
 
+        public void GetEnemyShipCount()
+        {
+            _count = 0;
+            //_enemyShipCount.text = $"Score: {_count.AddEnemyShipCount()}";
+        }
+
         private bool HasAlivePlayer()
         {
             return players
@@ -43,6 +53,7 @@ namespace SpaceGame.Game
             {
                 yield return _wait;
                 var enemyShip = CreateEnemyShip();
+                _count += 1;
                 enemyShip.SetTargets(players);
             }
         }
