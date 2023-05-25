@@ -1,11 +1,12 @@
-using System;
-
-public class Health
+namespace SpaceGame.ScoreSystem
 {
-    public float Value { get; private set; }
-
-    public void AddValueH(float value)
+    public class Health
     {
-        Value += value;
+        public float Value { get; private set; }
+
+        public void AddValueH(float value)
+        {
+            Value += value;
+        }
     }
 }
