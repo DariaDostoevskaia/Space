@@ -2,6 +2,7 @@ using SpaceGame.ScoreSystem;
 using SpaceGame.Ship;
 using System.Collections;
 using System.Linq;
+using TMPro;
 using UnityEngine;
 
 namespace SpaceGame.Game
@@ -13,6 +14,9 @@ namespace SpaceGame.Game
         [SerializeField] private float _maxPositionX;
         [SerializeField] private float _positionY;
         [SerializeField] private float _spawnDelay = 10f;
+
+        [SerializeField] private TextMeshProUGUI _enemyShipCountText;
+
         private WaitForSeconds _wait;
         private PlayerShip[] players;
 
@@ -37,7 +41,7 @@ namespace SpaceGame.Game
         public void GetEnemyShipCount()
         {
             _count = 0;
-            //_enemyShipCount.text = $"Score: {_count.AddEnemyShipCount()}";
+            //_enemyShipCountText.text = $"Score: {_enemyShipCountText.AddEnemyShipCount(_count)}"; //Player.cs
         }
 
         private bool HasAlivePlayer()
