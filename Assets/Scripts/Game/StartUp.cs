@@ -2,7 +2,6 @@ using SpaceGame.Ship;
 using SpaceGame.ScoreSystem;
 using TMPro;
 using UnityEngine;
-using System;
 
 namespace SpaceGame.Game
 {
@@ -18,9 +17,9 @@ namespace SpaceGame.Game
         [SerializeField] private TextMeshProUGUI _scoreText;
         [SerializeField] private int _scorePerEnemy = 1;
 
-        [SerializeField] private TextMeshProUGUI _healthText;
+        [SerializeField] private TextMeshProUGUI _firstPlayerHealthText;
+        [SerializeField] private TextMeshProUGUI _secondPlayerHealthText;
 
-        private float _health;
         [SerializeField] private TextMeshProUGUI _enemyShipCountText;
         [SerializeField] private EnemyRepository _enemyRepository;
 
@@ -33,12 +32,26 @@ namespace SpaceGame.Game
             var score = new Score();
             player = new Player(score);
             player.OnScoreAdded += OnScoreAdded;
-            //_health = player.CurrentHealth;
             var firstPlayer = CreatePlayerShip(_playerShipPrefab, player);
             var secondPlayer = CreatePlayerShip(_player2ShipPrefab, player);
 
+            firstPlayer.OnHealthChanged += UpdateFirstPlayerHealth;
+            secondPlayer.OnHealthChanged += UpdateSecondPlayerHealth;
+            UpdateFirstPlayerHealth(firstPlayer.CurrentHealth);
+            UpdateSecondPlayerHealth(secondPlayer.CurrentHealth);
+
             _enemyFactory.SetUp(new PlayerShip[] { firstPlayer, secondPlayer });
             _enemyFactory.StartSpawnEnemies();
+        }
+
+        private void UpdateFirstPlayerHealth(float health)
+        {
+            _firstPlayerHealthText.text = $"Player 1 Health: {health}";
+        }
+
+        private void UpdateSecondPlayerHealth(float health)
+        {
+            _secondPlayerHealthText.text = $"Player 2 Health: {health}";
         }
 
         private void OnEnemyCountChanged(int count)
@@ -51,26 +64,23 @@ namespace SpaceGame.Game
             _scoreText.text = $"Score: {player.GetScore()}";
         }
 
-        private void OnHealthAdded()
-        {
-            _healthText.text = $"Health: {player.GetHealth()}";
-        }
-
-        //private void GetHealth(SpaceShip player)
-        //{
-        //    //_health = player.CurrentHealth;
-        //    //_health = _health.Value;
-        //}
-
         private PlayerShip CreatePlayerShip(PlayerShip playerShipPrefab, Player player)
         {
             var playerShip = Instantiate(playerShipPrefab, _startedPosition.position, Quaternion.identity);
+
             playerShip.OnEnemyDestroyed += OnEnemyDestroyed;
+            playerShip.OnDestroyed += OnDestroyed;
             return playerShip;
             void OnEnemyDestroyed()
             {
-                playerShip.OnEnemyDestroyed -= OnEnemyDestroyed;
                 player.AddScore(_scorePerEnemy);
+            }
+            void OnDestroyed()
+            {
+                playerShip.OnHealthChanged -= UpdateFirstPlayerHealth;
+                playerShip.OnHealthChanged -= UpdateSecondPlayerHealth;
+                playerShip.OnEnemyDestroyed -= OnEnemyDestroyed;
+                playerShip.OnDestroyed -= OnDestroyed;
             }
         }
 

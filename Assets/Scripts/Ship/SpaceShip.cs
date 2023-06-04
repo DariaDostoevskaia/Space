@@ -11,6 +11,8 @@ namespace SpaceGame.Ship
 
         public event Action OnDestroyed;
 
+        public event Action<float> OnHealthChanged;
+
         [SerializeField] private float _maxHealth;
         [SerializeField] private Laser _laser;
         [SerializeField] private float _timeBetweenFires;
@@ -110,6 +112,7 @@ namespace SpaceGame.Ship
                 return;
 
             _currentHealth -= laser.GetDamage();
+            OnHealthChanged?.Invoke(_currentHealth);
 
             if (IsLife())
             {
@@ -127,6 +130,7 @@ namespace SpaceGame.Ship
         private void OnDestroy()
         {
             AudioController.Play(_destroyAudio);
+            OnHealthChanged = null;
         }
     }
 }
