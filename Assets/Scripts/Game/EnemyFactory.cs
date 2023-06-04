@@ -1,6 +1,7 @@
 using SpaceGame.Ship;
 using System.Collections;
 using System.Linq;
+using TMPro;
 using UnityEngine;
 
 namespace SpaceGame.Game
@@ -12,6 +13,9 @@ namespace SpaceGame.Game
         [SerializeField] private float _maxPositionX;
         [SerializeField] private float _positionY;
         [SerializeField] private float _spawnDelay = 10f;
+
+        [SerializeField] private EnemyRepository _enemyRepository;
+
         private WaitForSeconds _wait;
         private PlayerShip[] players;
 
@@ -52,7 +56,14 @@ namespace SpaceGame.Game
             var positionX = Random.Range(_minPositionX, _maxPositionX);
             var position = new Vector3(positionX, _positionY, 0);
             var enemyShip = Instantiate(_enemyShipPrefab, position, Quaternion.identity);
+            _enemyRepository.Add(enemyShip);
+            enemyShip.OnDestroyed += OnDestroyed;
             return enemyShip;
+            void OnDestroyed()
+            {
+                enemyShip.OnDestroyed -= OnDestroyed;
+                _enemyRepository.Remove(enemyShip);
+            }
         }
     }
 }

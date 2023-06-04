@@ -1,4 +1,3 @@
-using SpaceGame.Ship;
 using System.Collections;
 using System.Linq;
 using UnityEngine;
@@ -81,7 +80,7 @@ namespace SpaceGame.Ship
         private IEnumerator ShootCoroutine()
         {
             yield return new WaitForSeconds(_firstShootDelay);
-            while (true)
+            while (IsMovementReady())
             {
                 ShootLaser();
                 yield return null;

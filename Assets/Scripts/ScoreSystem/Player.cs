@@ -5,6 +5,7 @@ namespace SpaceGame.ScoreSystem
     public class Player
     {
         public event Action OnScoreAdded;
+
         private Score _score;
 
         public Player(Score score)
