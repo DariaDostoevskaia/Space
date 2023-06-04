@@ -34,7 +34,7 @@ namespace SpaceGame.Game
             player = new Player(score);
             player.OnScoreAdded += OnScoreAdded;
             var firstPlayer = CreatePlayerShip(_playerShipPrefab, player);
-            var secondPlayer = CreatePlayerShip(_player2ShipPrefab, player);
+            var secondPlayer = CreatePlayerShip(_player2ShipPrefab, player/*2*/);
             _enemyRepository.OnEnemyAdded += TryKillPlayers;
 
             firstPlayer.OnHealthChanged += UpdateFirstPlayerHealth;
