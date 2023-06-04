@@ -111,17 +111,24 @@ namespace SpaceGame.Ship
             if (gameObject.CompareTag(laser.OwnerTag))
                 return;
 
-            _currentHealth -= laser.GetDamage();
-            OnHealthChanged?.Invoke(_currentHealth);
+            Damage(laser.GetDamage());
 
             if (IsLife())
             {
                 Destroy(laser.gameObject);
                 return;
             }
-
             laser.DestroyEnemy();
             Destroy(laser.gameObject);
+        }
+
+        public void Damage(float damage)
+        {
+            _currentHealth -= damage;
+            OnHealthChanged?.Invoke(_currentHealth);
+            if (IsLife())
+                return;
+
             OnDestroyed?.Invoke();
             Destroy(gameObject);
             Instantiate(_explosion, gameObject.transform.position, Quaternion.identity);

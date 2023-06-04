@@ -29,11 +29,13 @@ namespace SpaceGame.Game
         {
             _enemyRepository.OnEnemyAdded += OnEnemyCountChanged;
             _enemyRepository.OnEnemyRemoved += OnEnemyCountChanged;
+
             var score = new Score();
             player = new Player(score);
             player.OnScoreAdded += OnScoreAdded;
             var firstPlayer = CreatePlayerShip(_playerShipPrefab, player);
             var secondPlayer = CreatePlayerShip(_player2ShipPrefab, player);
+            _enemyRepository.OnEnemyAdded += TryKillPlayers;
 
             firstPlayer.OnHealthChanged += UpdateFirstPlayerHealth;
             secondPlayer.OnHealthChanged += UpdateSecondPlayerHealth;
@@ -42,6 +44,15 @@ namespace SpaceGame.Game
 
             _enemyFactory.SetUp(new PlayerShip[] { firstPlayer, secondPlayer });
             _enemyFactory.StartSpawnEnemies();
+
+            void TryKillPlayers(int count)
+            {
+                if (count == 10)
+                {
+                    firstPlayer.Damage(firstPlayer.CurrentHealth);
+                    secondPlayer.Damage(secondPlayer.CurrentHealth);
+                }
+            }
         }
 
         private void UpdateFirstPlayerHealth(float health)
