@@ -9,6 +9,8 @@ namespace SpaceGame.Ship
     {
         public event Action OnEnemyDestroyed;
 
+        public event Action OnDestroyed;
+
         [SerializeField] private float _maxHealth;
         [SerializeField] private Laser _laser;
         [SerializeField] private float _timeBetweenFires;
@@ -117,6 +119,7 @@ namespace SpaceGame.Ship
 
             laser.DestroyEnemy();
             Destroy(laser.gameObject);
+            OnDestroyed?.Invoke();
             Destroy(gameObject);
             Instantiate(_explosion, gameObject.transform.position, Quaternion.identity);
         }

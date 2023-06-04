@@ -1,4 +1,3 @@
-using SpaceGame.ScoreSystem;
 using SpaceGame.Ship;
 using System.Collections;
 using System.Linq;
@@ -15,13 +14,10 @@ namespace SpaceGame.Game
         [SerializeField] private float _positionY;
         [SerializeField] private float _spawnDelay = 10f;
 
-        [SerializeField] private TextMeshProUGUI _enemyShipCountText;
+        [SerializeField] private EnemyRepository _enemyRepository;
 
         private WaitForSeconds _wait;
         private PlayerShip[] players;
-
-        private EnemyShipCount _enemyShipCount;
-        private int _count = 0;
 
         private void Start()
         {
@@ -38,12 +34,6 @@ namespace SpaceGame.Game
             StartCoroutine(SpawnEnemyCoroutine());
         }
 
-        public void GetEnemyShipCount()
-        {
-            _count = 0;
-            //_enemyShipCountText.text = $"Score: {_enemyShipCountText.AddEnemyShipCount(_count)}"; //Player.cs
-        }
-
         private bool HasAlivePlayer()
         {
             return players
@@ -57,7 +47,6 @@ namespace SpaceGame.Game
             {
                 yield return _wait;
                 var enemyShip = CreateEnemyShip();
-                _count += 1;
                 enemyShip.SetTargets(players);
             }
         }
@@ -67,7 +56,14 @@ namespace SpaceGame.Game
             var positionX = Random.Range(_minPositionX, _maxPositionX);
             var position = new Vector3(positionX, _positionY, 0);
             var enemyShip = Instantiate(_enemyShipPrefab, position, Quaternion.identity);
+            _enemyRepository.Add(enemyShip);
+            enemyShip.OnDestroyed += OnDestroyed;
             return enemyShip;
+            void OnDestroyed()
+            {
+                enemyShip.OnDestroyed -= OnDestroyed;
+                _enemyRepository.Remove(enemyShip);
+            }
         }
     }
 }

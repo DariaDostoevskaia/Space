@@ -156,8 +156,10 @@ MonoBehaviour:
   _player2ShipPrefab: {fileID: 2617676815403356747, guid: 1d5b90fa40c43a34bafd08f15ded0d7a, type: 3}
   _enemyFactory: {fileID: 1643672878}
   _startedPosition: {fileID: 1588906777}
-  _scoreText: {fileID: 0}
+  _scoreText: {fileID: 1245009020}
   _scorePerEnemy: 1
+  _enemyShipCountText: {fileID: 1363036910}
+  _enemyRepository: {fileID: 2098381611}
 --- !u!4 &57820432
 Transform:
   m_ObjectHideFlags: 0
@@ -1197,6 +1199,7 @@ MonoBehaviour:
   _maxPositionX: 12.03
   _positionY: 6.2
   _spawnDelay: 5
+  _enemyRepository: {fileID: 2098381611}
 --- !u!4 &1643672879
 Transform:
   m_ObjectHideFlags: 0
@@ -1211,4 +1214,48 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &2098381610
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2098381612}
+  - component: {fileID: 2098381611}
+  m_Layer: 0
+  m_Name: EnemyRepository
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &2098381611
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2098381610}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 08520a05ececb9f4fbb30077a594b72e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!4 &2098381612
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2098381610}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 1036.7595, y: 391.61813, z: -6.544741}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
