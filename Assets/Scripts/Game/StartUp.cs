@@ -27,7 +27,7 @@ namespace SpaceGame.Game
         [SerializeField] private EnemyRepository _enemyRepository;
 
         private Player player1;
-        private Player player2;
+        private Player2 player2;
 
         private void Start()
         {
@@ -35,16 +35,17 @@ namespace SpaceGame.Game
             _enemyRepository.OnEnemyRemoved += OnEnemyCountChanged;
 
             var score = new Score();
-            var score2 = new Score();
+            var score2 = new Score2();
 
             player1 = new Player(score);
-            player2 = new Player(score2);
+            player2 = new Player2(score2);
 
             player1.OnScoreAdded += OnPlayer1ScoreAdded;
-            player2.OnScoreAdded += OnPlayer2ScoreAdded;
+            player2.OnScoreAddedPlayer2 += OnPlayer2ScoreAdded;
 
-            var firstPlayer = CreatePlayerShip(_player1ShipPrefab, player1);
-            var secondPlayer = CreatePlayerShip(_player2ShipPrefab, player2);
+            var firstPlayer = CreatePlayerShip(_player1ShipPrefab, player1, null);
+            var secondPlayer = CreatePlayerShip(_player2ShipPrefab, null, player2);
+
             _enemyRepository.OnEnemyAdded += TryKillPlayers;
 
             firstPlayer.OnHealthChanged += UpdateFirstPlayerHealth;
@@ -87,10 +88,10 @@ namespace SpaceGame.Game
 
         private void OnPlayer2ScoreAdded()
         {
-            _player2ScoreText.text = $"Player 2 Score: {player2.GetScore()}";
+            _player2ScoreText.text = $"Player 2 Score: {player2.GetScorePlayer2()}";
         }
 
-        private PlayerShip CreatePlayerShip(PlayerShip playerShipPrefab, Player player)
+        private PlayerShip CreatePlayerShip(PlayerShip playerShipPrefab, Player player, Player2 player2)
         {
             var playerShip = Instantiate(playerShipPrefab, _startedPosition.position, Quaternion.identity);
 
@@ -100,7 +101,7 @@ namespace SpaceGame.Game
             void OnEnemyDestroyed()
             {
                 player.AddScore(_scorePlayer1PerEnemy);
-                player2.AddScore(_scorePlayer2PerEnemy);
+                player2.AddScorePlayer2(_scorePlayer2PerEnemy);
             }
             void OnDestroyed()
             {
@@ -114,7 +115,7 @@ namespace SpaceGame.Game
         private void OnDestroy()
         {
             player1.OnScoreAdded -= OnPlayer1ScoreAdded;
-            player2.OnScoreAdded -= OnPlayer2ScoreAdded;
+            player2.OnScoreAddedPlayer2 -= OnPlayer2ScoreAdded;
 
             _enemyRepository.OnEnemyAdded -= OnEnemyCountChanged;
             _enemyRepository.OnEnemyRemoved -= OnEnemyCountChanged;
