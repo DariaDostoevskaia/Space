@@ -14,6 +14,7 @@ public class CSharp7 : MonoBehaviour
     {
         var list = new List<Vector3>();
         GetXPositions(list);
+        GetArray();
     }
 
     public List<int> GetXPositions(List<Vector3> vectors)
@@ -22,28 +23,31 @@ public class CSharp7 : MonoBehaviour
           .Where(vector => vector.x > _vectorCount)
           .Select(vector => (int)vector.x)
           .ToList();
-        GetArray();
         return xPositions;
     }
 
     private void GetArray()
     {
         // Exercise 3.Skip, ToArray
-        var array = xPositions.ToArray();
+
+        var array = xPositions.ToArray()
+            .Skip(_skipCount);
 
         if (_skipCount >= 0
-            && _skipCount < array.Length)
+            && _skipCount < xPositions.Count)
         {
-            var skipNumber = array.Skip(_skipCount);
-            foreach (int x in skipNumber)
+            foreach (int x in array)
                 Debug.Log($"{x} ");
         }
+
         // Exercise 4. Take
+
         if (_takeCount >= 0
-           && _takeCount < array.Length)
+            && _takeCount < xPositions.Count)
         {
-            var takeNumber = array.Take(_takeCount);
-            foreach (int y in takeNumber)
+            var arrayTake = xPositions.Take(_takeCount);
+
+            foreach (int y in arrayTake)
                 Debug.Log($"{y} ");
         }
     }
