@@ -2,7 +2,6 @@ using SpaceGame.Ship;
 using SpaceGame.ScoreSystem;
 using TMPro;
 using UnityEngine;
-using System;
 
 namespace SpaceGame.Game
 {
