@@ -17,8 +17,7 @@ namespace SpaceGame.Game
         [SerializeField] private TextMeshProUGUI _player1ScoreText;
         [SerializeField] private TextMeshProUGUI _player2ScoreText;
 
-        [SerializeField] private int _scorePlayer1PerEnemy = 1;
-        [SerializeField] private int _scorePlayer2PerEnemy = 1;
+        [SerializeField] private int _scorePerEnemy = 1;
 
         [SerializeField] private TextMeshProUGUI _firstPlayerHealthText;
         [SerializeField] private TextMeshProUGUI _secondPlayerHealthText;
@@ -26,25 +25,22 @@ namespace SpaceGame.Game
         [SerializeField] private TextMeshProUGUI _enemyShipCountText;
         [SerializeField] private EnemyRepository _enemyRepository;
 
-        private Player player1;
-        private Player2 player2;
-
         private void Start()
         {
             _enemyRepository.OnEnemyAdded += OnEnemyCountChanged;
             _enemyRepository.OnEnemyRemoved += OnEnemyCountChanged;
 
             var score = new Score();
-            var score2 = new Score2();
+            var score2 = new Score();
 
-            player1 = new Player(score);
-            player2 = new Player2(score2);
+            var player1 = new Player(score);
+            var player2 = new Player(score2);
 
-            player1.OnScoreAdded += OnPlayer1ScoreAdded;
-            player2.OnScoreAddedPlayer2 += OnPlayer2ScoreAdded;
+            //player1.OnScoreAdded += OnPlayer1ScoreAdded;
+            //player2.OnScoreAdded += OnPlayer2ScoreAdded;
 
-            var firstPlayer = CreatePlayerShip(_player1ShipPrefab, player1, null);
-            var secondPlayer = CreatePlayerShip(_player2ShipPrefab, null, player2);
+            var firstPlayer = CreatePlayerShip(_player1ShipPrefab, player1);
+            var secondPlayer = CreatePlayerShip(_player2ShipPrefab, player2);
 
             _enemyRepository.OnEnemyAdded += TryKillPlayers;
 
@@ -81,17 +77,17 @@ namespace SpaceGame.Game
             _enemyShipCountText.text = $"Enemy ship count: {count}";
         }
 
-        private void OnPlayer1ScoreAdded()
+        private void OnPlayer1ScoreAdded(int score)
         {
-            _player1ScoreText.text = $"Player 1 Score: {player1.GetScore()}";
+            _player1ScoreText.text = $"Player 1 Score: {score}";
         }
 
         private void OnPlayer2ScoreAdded()
         {
-            _player2ScoreText.text = $"Player 2 Score: {player2.GetScorePlayer2()}";
+            //    _player2ScoreText.text = $"Player 2 Score:/* {player2.GetScore()}"*/
         }
 
-        private PlayerShip CreatePlayerShip(PlayerShip playerShipPrefab, Player player, Player2 player2)
+        private PlayerShip CreatePlayerShip(PlayerShip playerShipPrefab, Player player)
         {
             var playerShip = Instantiate(playerShipPrefab, _startedPosition.position, Quaternion.identity);
 
@@ -100,8 +96,7 @@ namespace SpaceGame.Game
             return playerShip;
             void OnEnemyDestroyed()
             {
-                player.AddScore(_scorePlayer1PerEnemy);
-                player2.AddScorePlayer2(_scorePlayer2PerEnemy);
+                player.AddScore(_scorePerEnemy);
             }
             void OnDestroyed()
             {
@@ -109,14 +104,13 @@ namespace SpaceGame.Game
                 playerShip.OnHealthChanged -= UpdateSecondPlayerHealth;
                 playerShip.OnEnemyDestroyed -= OnEnemyDestroyed;
                 playerShip.OnDestroyed -= OnDestroyed;
+                //_player1.OnScoreAdded -= OnPlayer1ScoreAdded;
+                //_player2.OnScoreAddedPlayer2 -= OnPlayer2ScoreAdded;
             }
         }
 
         private void OnDestroy()
         {
-            player1.OnScoreAdded -= OnPlayer1ScoreAdded;
-            player2.OnScoreAddedPlayer2 -= OnPlayer2ScoreAdded;
-
             _enemyRepository.OnEnemyAdded -= OnEnemyCountChanged;
             _enemyRepository.OnEnemyRemoved -= OnEnemyCountChanged;
         }
