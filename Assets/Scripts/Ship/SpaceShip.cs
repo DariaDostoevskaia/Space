@@ -11,6 +11,8 @@ namespace SpaceGame.Ship
 
         public event Action OnDestroyed;
 
+        public event Action<float> OnHealthChanged;
+
         [SerializeField] private float _maxHealth;
         [SerializeField] private Laser _laser;
         [SerializeField] private float _timeBetweenFires;
@@ -109,16 +111,24 @@ namespace SpaceGame.Ship
             if (gameObject.CompareTag(laser.OwnerTag))
                 return;
 
-            _currentHealth -= laser.GetDamage();
+            Damage(laser.GetDamage());
 
             if (IsLife())
             {
                 Destroy(laser.gameObject);
                 return;
             }
-
             laser.DestroyEnemy();
             Destroy(laser.gameObject);
+        }
+
+        public void Damage(float damage)
+        {
+            _currentHealth -= damage;
+            OnHealthChanged?.Invoke(_currentHealth);
+            if (IsLife())
+                return;
+
             OnDestroyed?.Invoke();
             Destroy(gameObject);
             Instantiate(_explosion, gameObject.transform.position, Quaternion.identity);
@@ -127,6 +137,7 @@ namespace SpaceGame.Ship
         private void OnDestroy()
         {
             AudioController.Play(_destroyAudio);
+            OnHealthChanged = null;
         }
     }
 }
