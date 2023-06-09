@@ -36,8 +36,8 @@ namespace SpaceGame.Game
             var player1 = new Player(score);
             var player2 = new Player(score2);
 
-            //player1.OnScoreAdded += OnPlayer1ScoreAdded;
-            //player2.OnScoreAdded += OnPlayer2ScoreAdded;
+            player1.OnScoreAdded += OnPlayer1ScoreAdded;
+            player2.OnScoreAdded += OnPlayer2ScoreAdded;
 
             var firstPlayer = CreatePlayerShip(_player1ShipPrefab, player1);
             var secondPlayer = CreatePlayerShip(_player2ShipPrefab, player2);
@@ -82,9 +82,9 @@ namespace SpaceGame.Game
             _player1ScoreText.text = $"Player 1 Score: {score}";
         }
 
-        private void OnPlayer2ScoreAdded()
+        private void OnPlayer2ScoreAdded(int score)
         {
-            //    _player2ScoreText.text = $"Player 2 Score:/* {player2.GetScore()}"*/
+            _player2ScoreText.text = $"Player 2 Score: {score}";
         }
 
         private PlayerShip CreatePlayerShip(PlayerShip playerShipPrefab, Player player)
@@ -104,8 +104,8 @@ namespace SpaceGame.Game
                 playerShip.OnHealthChanged -= UpdateSecondPlayerHealth;
                 playerShip.OnEnemyDestroyed -= OnEnemyDestroyed;
                 playerShip.OnDestroyed -= OnDestroyed;
-                //_player1.OnScoreAdded -= OnPlayer1ScoreAdded;
-                //_player2.OnScoreAddedPlayer2 -= OnPlayer2ScoreAdded;
+                player.OnScoreAdded -= OnPlayer1ScoreAdded;
+                player.OnScoreAdded -= OnPlayer2ScoreAdded;
             }
         }
 

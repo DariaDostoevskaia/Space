@@ -4,7 +4,7 @@ namespace SpaceGame.ScoreSystem
 {
     public class Player
     {
-        public event Action/*<>*/ OnScoreAdded;
+        public event Action<int> OnScoreAdded;
 
         private Score _score;
 
@@ -16,12 +16,7 @@ namespace SpaceGame.ScoreSystem
         public void AddScore(int value)
         {
             _score.AddValue(value);
-            OnScoreAdded?.Invoke();
+            OnScoreAdded?.Invoke(_score.Value);
         }
-
-        //public int GetScore()
-        //{
-        //    return _score.Value;
-        //}
     }
 }
