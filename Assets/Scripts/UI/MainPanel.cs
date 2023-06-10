@@ -1,39 +1,72 @@
+using System.Collections.Generic;
+using System.IO;
+using System.Runtime.Serialization.Formatters.Binary;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public class MainPanel : MonoBehaviour
+namespace SpaceGame.UI
 {
-    [SerializeField] private Button _startGameButton;
-    [SerializeField] private Button _loadGameButton;
-    [SerializeField] private Button _endGameButton;
-
-    private void Start()
+    public class MainPanel : MonoBehaviour
     {
-        _startGameButton.onClick.AddListener(StartGame);
-        _loadGameButton.onClick.AddListener(LoadGame);
-        _endGameButton.onClick.AddListener(EndGame);
+        [SerializeField] private Button _startGameButton;
+        [SerializeField] private Button _loadGameButton;
+        [SerializeField] private Button _endGameButton;
+
+        [SerializeField] private PlayerData _playerData;
+
+        public void Start()
+        {
+            _startGameButton.onClick.AddListener(StartGame);
+
+            _loadGameButton.onClick.AddListener(LoadGame);
+            _endGameButton.onClick.AddListener(EndGame);
+        }
+
+        public void StartGame()
+        {
+            SceneManager.LoadScene(1);
+        }
+
+        public void LoadGame()
+        {
+            //methods;
+        }
+
+        public void EndGame()
+        {
+            Application.Quit();
+        }
+
+        public void OnDestroy()
+        {
+            _startGameButton.onClick.RemoveAllListeners();
+        }
     }
 
-    private void StartGame()
-    {
-        SceneManager.LoadScene(1);
-    }
+    //public class SaveLoad
+    //{
+    //    public static List<Game> savedGames = new List<Game>();
 
-    private void LoadGame()
-    {
-        SceneManager.LoadScene(2);
-    }
+    //    public static void Save()
+    //    {
+    //        SaveLoad.savedGames.Add(Game.current);
+    //        BinaryFormatter bf = new BinaryFormatter();
+    //        //Application.persistentDataPath это строка; выведите ее в логах и вы увидите расположение файла сохранений
+    //        FileStream file = File.Create(Application.persistentDataPath + "/savedGames.gd");
+    //        bf.Serialize(file, SaveLoad.savedGames);
+    //        file.Close();
+    //    }
 
-    private void EndGame()
-    {
-        SceneManager.LoadScene(3);
-    }
-
-    private void OnDestroy()
-    {
-        _startGameButton.onClick.RemoveAllListeners();
-        _loadGameButton.onClick.RemoveAllListeners();
-        _endGameButton.onClick.RemoveAllListeners();
-    }
+    //    public static void Load()
+    //    {
+    //        if (File.Exists(Application.persistentDataPath + "/savedGames.gd"))
+    //        {
+    //            BinaryFormatter bf = new BinaryFormatter();
+    //            FileStream file = File.Open(Application.persistentDataPath + "/savedGames.gd", FileMode.Open);
+    //            SaveLoad.savedGames = (List<Game>)bf.Deserialize(file);
+    //            file.Close();
+    //        }
+    //    }
+    //}
 }

@@ -2,22 +2,25 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public class MenuExitButton : MonoBehaviour
+namespace SpaceGame.UI
 {
-    [SerializeField] private Button _menuExitButton;
-
-    private void Start()
+    public class MenuExitButton : MonoBehaviour
     {
-        _menuExitButton.onClick.AddListener(MenuExit);
-    }
+        [SerializeField] private Button _menuExitButton;
 
-    private void MenuExit()
-    {
-        SceneManager.LoadScene(5);
-    }
+        public void Start()
+        {
+            _menuExitButton.onClick.AddListener(MenuExit);
+        }
 
-    private void OnDestroy()
-    {
-        _menuExitButton.onClick.RemoveAllListeners();
+        public void MenuExit()
+        {
+            SceneManager.LoadScene(0);
+        }
+
+        public void OnDestroy()
+        {
+            _menuExitButton.onClick.RemoveAllListeners();
+        }
     }
 }
