@@ -1,3 +1,4 @@
+using SpaceGame.SaveSystem;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -10,11 +11,13 @@ namespace SpaceGame.UI
 
         public void Start()
         {
-            _menuExitButton.onClick.AddListener(MenuExit);
+            _menuExitButton.onClick.AddListener(LoadMainMenu);
         }
 
-        public void MenuExit()
+        public void LoadMainMenu()
         {
+            var saveService = new SaveService();
+            saveService.SaveGame(GameContext.CurrentGameData);
             SceneManager.LoadScene(0);
         }
 

@@ -1,3 +1,4 @@
+using SpaceGame.SaveSystem;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -25,6 +26,12 @@ namespace SpaceGame.Ship
             var euler = GetDirection(_rotationLeftButton, Vector3.back);
             euler += GetDirection(_rotationRightButton, Vector3.forward);
             _rotation *= Quaternion.Euler(euler);
+        }
+
+        protected override void Movement()
+        {
+            base.Movement();
+            //GameContext.PlayerData2.Position = transform.position;
         }
     }
 }

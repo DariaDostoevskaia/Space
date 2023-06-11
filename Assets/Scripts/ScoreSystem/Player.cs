@@ -18,5 +18,10 @@ namespace SpaceGame.ScoreSystem
             _score.AddValue(value);
             OnScoreAdded?.Invoke(_score.Value);
         }
+
+        public int GetScore()
+        {
+            return _score.Value;
+        }
     }
 }

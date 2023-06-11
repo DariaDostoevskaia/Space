@@ -2,6 +2,9 @@ using SpaceGame.Ship;
 using SpaceGame.ScoreSystem;
 using TMPro;
 using UnityEngine;
+using SpaceGame.SaveSystem;
+using System.Linq;
+using SpaceGame.SaveSystem.Dto;
 
 namespace SpaceGame.Game
 {
@@ -30,11 +33,30 @@ namespace SpaceGame.Game
             _enemyRepository.OnEnemyAdded += OnEnemyCountChanged;
             _enemyRepository.OnEnemyRemoved += OnEnemyCountChanged;
 
-            var score = new Score();
-            var score2 = new Score();
+            var playerFactory = new PlayerFactory();
 
-            var player1 = new Player(score);
-            var player2 = new Player(score2);
+            Player player1 = null;
+            Player player2 = null;
+
+            if (GameContext.CurrentGameData.PlayersData.Count == 2)
+            {
+                var playerData1 = GameContext.CurrentGameData.PlayersData[0];
+                var playerData2 = GameContext.CurrentGameData.PlayersData[1];
+
+                player1 = playerFactory.CreatePlayer(playerData1);
+                player2 = playerFactory.CreatePlayer(playerData2);
+            }
+            else
+            {
+                player1 = playerFactory.CreatePlayer();
+                player2 = playerFactory.CreatePlayer();
+
+                var playerData1 = playerFactory.CreatePlayerData(player1);
+                var playerData2 = playerFactory.CreatePlayerData(player2);
+
+                GameContext.CurrentGameData.PlayersData.Add(playerData1);
+                GameContext.CurrentGameData.PlayersData.Add(playerData2);
+            }
 
             player1.OnScoreAdded += OnPlayer1ScoreAdded;
             player2.OnScoreAdded += OnPlayer2ScoreAdded;
@@ -46,6 +68,7 @@ namespace SpaceGame.Game
 
             firstPlayer.OnHealthChanged += UpdateFirstPlayerHealth;
             secondPlayer.OnHealthChanged += UpdateSecondPlayerHealth;
+
             UpdateFirstPlayerHealth(firstPlayer.CurrentHealth);
             UpdateSecondPlayerHealth(secondPlayer.CurrentHealth);
 
@@ -65,11 +88,13 @@ namespace SpaceGame.Game
         private void UpdateFirstPlayerHealth(float health)
         {
             _firstPlayerHealthText.text = $"Player 1 Health: {health}";
+            GameContext.PlayerData1.Health = health;
         }
 
         private void UpdateSecondPlayerHealth(float health)
         {
             _secondPlayerHealthText.text = $"Player 2 Health: {health}";
+            GameContext.PlayerData2.Health = health;
         }
 
         private void OnEnemyCountChanged(int count)
@@ -80,11 +105,13 @@ namespace SpaceGame.Game
         private void OnPlayer1ScoreAdded(int score)
         {
             _player1ScoreText.text = $"Player 1 Score: {score}";
+            GameContext.PlayerData1.Score = score;
         }
 
         private void OnPlayer2ScoreAdded(int score)
         {
             _player2ScoreText.text = $"Player 2 Score: {score}";
+            GameContext.PlayerData2.Score = score;
         }
 
         private PlayerShip CreatePlayerShip(PlayerShip playerShipPrefab, Player player)

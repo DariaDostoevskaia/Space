@@ -1,6 +1,5 @@
-using System.Collections.Generic;
-using System.IO;
-using System.Runtime.Serialization.Formatters.Binary;
+using SpaceGame.SaveSystem;
+using SpaceGame.SaveSystem.Dto;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -13,23 +12,25 @@ namespace SpaceGame.UI
         [SerializeField] private Button _loadGameButton;
         [SerializeField] private Button _endGameButton;
 
-        [SerializeField] private PlayerData _playerData;
-
         private void Start()
         {
-            _startGameButton.onClick.AddListener(StartGame);
-            _loadGameButton.onClick.AddListener(LoadGame);
+            _startGameButton.onClick.AddListener(StartNewGame);
+            _loadGameButton.onClick.AddListener(StartLoadedGame);
             _endGameButton.onClick.AddListener(EndGame);
         }
 
-        private void StartGame()
+        private void StartNewGame()
         {
+            GameContext.CurrentGameData = new GameData();
             SceneManager.LoadScene(1);
         }
 
-        private void LoadGame()
+        private void StartLoadedGame()
         {
-            //methods;
+            var saveService = new SaveService();
+            var gameData = saveService.LoadGame();
+            GameContext.CurrentGameData = gameData;
+            SceneManager.LoadScene(1);
         }
 
         private void EndGame()
@@ -44,30 +45,4 @@ namespace SpaceGame.UI
             _endGameButton.onClick.RemoveAllListeners();
         }
     }
-
-    //public class SaveLoad
-    //{
-    //    public static List<Game> savedGames = new List<Game>();
-
-    //    public static void Save()
-    //    {
-    //        SaveLoad.savedGames.Add(Game.current);
-    //        BinaryFormatter bf = new BinaryFormatter();
-    //        //Application.persistentDataPath это строка; выведите ее в логах и вы увидите расположение файла сохранений
-    //        FileStream file = File.Create(Application.persistentDataPath + "/savedGames.gd");
-    //        bf.Serialize(file, SaveLoad.savedGames);
-    //        file.Close();
-    //    }
-
-    //    public static void Load()
-    //    {
-    //        if (File.Exists(Application.persistentDataPath + "/savedGames.gd"))
-    //        {
-    //            BinaryFormatter bf = new BinaryFormatter();
-    //            FileStream file = File.Open(Application.persistentDataPath + "/savedGames.gd", FileMode.Open);
-    //            SaveLoad.savedGames = (List<Game>)bf.Deserialize(file);
-    //            file.Close();
-    //        }
-    //    }
-    //}
 }
