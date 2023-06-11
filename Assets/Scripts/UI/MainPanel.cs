@@ -15,32 +15,33 @@ namespace SpaceGame.UI
 
         [SerializeField] private PlayerData _playerData;
 
-        public void Start()
+        private void Start()
         {
             _startGameButton.onClick.AddListener(StartGame);
-
             _loadGameButton.onClick.AddListener(LoadGame);
             _endGameButton.onClick.AddListener(EndGame);
         }
 
-        public void StartGame()
+        private void StartGame()
         {
             SceneManager.LoadScene(1);
         }
 
-        public void LoadGame()
+        private void LoadGame()
         {
             //methods;
         }
 
-        public void EndGame()
+        private void EndGame()
         {
             Application.Quit();
         }
 
-        public void OnDestroy()
+        private void OnDestroy()
         {
             _startGameButton.onClick.RemoveAllListeners();
+            _loadGameButton.onClick.RemoveAllListeners();
+            _endGameButton.onClick.RemoveAllListeners();
         }
     }
 
