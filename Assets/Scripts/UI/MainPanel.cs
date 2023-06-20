@@ -1,23 +1,48 @@
+using SpaceGame.SaveSystem;
+using SpaceGame.SaveSystem.Dto;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public class MainPanel : MonoBehaviour
+namespace SpaceGame.UI
 {
-    [SerializeField] private Button _startGameButton;
-
-    private void Start()
+    public class MainPanel : MonoBehaviour
     {
-        _startGameButton.onClick.AddListener(StartGame);
-    }
+        [SerializeField] private Button _startGameButton;
+        [SerializeField] private Button _loadGameButton;
+        [SerializeField] private Button _endGameButton;
 
-    private void StartGame()
-    {
-        SceneManager.LoadScene(1);
-    }
+        private void Start()
+        {
+            _startGameButton.onClick.AddListener(StartNewGame);
+            _loadGameButton.onClick.AddListener(StartLoadedGame);
+            _endGameButton.onClick.AddListener(EndGame);
+        }
 
-    private void OnDestroy()
-    {
-        _startGameButton.onClick.RemoveAllListeners();
+        private void StartNewGame()
+        {
+            GameContext.CurrentGameData = new GameData();
+            SceneManager.LoadScene(1);
+        }
+
+        private void StartLoadedGame()
+        {
+            var saveService = new SaveService();
+            var gameData = saveService.LoadGame();
+            GameContext.CurrentGameData = gameData;
+            SceneManager.LoadScene(1);
+        }
+
+        private void EndGame()
+        {
+            Application.Quit();
+        }
+
+        private void OnDestroy()
+        {
+            _startGameButton.onClick.RemoveAllListeners();
+            _loadGameButton.onClick.RemoveAllListeners();
+            _endGameButton.onClick.RemoveAllListeners();
+        }
     }
 }
