@@ -1,5 +1,4 @@
-﻿using SpaceGame.SaveSystem;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace SpaceGame.Ship
 {
