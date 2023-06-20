@@ -37,11 +37,11 @@ namespace SpaceGame.Game
 
             Player player1 = null;
             Player player2 = null;
-
-            if (GameContext.CurrentGameData.PlayersData.Count == 2)
+            var playersData = GameContext.CurrentGameData.PlayersData;
+            if (playersData.Count == 2)
             {
-                var playerData1 = GameContext.CurrentGameData.PlayersData[0];
-                var playerData2 = GameContext.CurrentGameData.PlayersData[1];
+                var playerData1 = playersData[0];
+                var playerData2 = playersData[1];
 
                 player1 = playerFactory.CreatePlayer(playerData1);
                 player2 = playerFactory.CreatePlayer(playerData2);
@@ -54,8 +54,8 @@ namespace SpaceGame.Game
                 var playerData1 = playerFactory.CreatePlayerData(player1);
                 var playerData2 = playerFactory.CreatePlayerData(player2);
 
-                GameContext.CurrentGameData.PlayersData.Add(playerData1);
-                GameContext.CurrentGameData.PlayersData.Add(playerData2);
+                playersData.Add(playerData1);
+                playersData.Add(playerData2);
             }
 
             player1.OnScoreAdded += OnPlayer1ScoreAdded;
