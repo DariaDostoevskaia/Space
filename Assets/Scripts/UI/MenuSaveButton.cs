@@ -10,13 +10,14 @@ public class MenuSaveButton : MonoBehaviour
 
     private void Start()
     {
-        _saveButton.onClick.AddListener(StartLoadedGame);
+        _saveButton.onClick.AddListener(Save);
     }
 
-    private void StartLoadedGame()
+    private void Save()
     {
         var saveService = new SaveService();
         saveService.SaveGame(GameContext.CurrentGameData);
+        Debug.Log($"Save {GameContext.CurrentGameData}");
     }
 
     private void OnDestroy()
