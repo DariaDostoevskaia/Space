@@ -5,6 +5,7 @@ using UnityEngine;
 using SpaceGame.SaveSystem;
 using System.Linq;
 using SpaceGame.SaveSystem.Dto;
+using SpaceGame.UI;
 
 namespace SpaceGame.Game
 {
@@ -27,6 +28,8 @@ namespace SpaceGame.Game
 
         [SerializeField] private TextMeshProUGUI _enemyShipCountText;
         [SerializeField] private EnemyRepository _enemyRepository;
+
+        [SerializeField] private HUD _hud;
 
         private void Start()
         {
@@ -87,8 +90,8 @@ namespace SpaceGame.Game
 
         private void UpdateFirstPlayerHealth(float health)
         {
-            _firstPlayerHealthText.text = $"Player 1 Health: {health}";
             GameContext.PlayerData1.Health = health;
+            _hud.SetFirstPlayerHealthText(health);
         }
 
         private void UpdateSecondPlayerHealth(float health)
