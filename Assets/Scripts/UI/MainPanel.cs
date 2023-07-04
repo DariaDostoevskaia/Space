@@ -25,7 +25,7 @@ namespace SpaceGame.UI
             SceneManager.LoadScene(1);
         }
 
-        private void StartLoadedGame()
+        private static void StartLoadedGame()
         {
             var saveService = new SaveService();
             var gameData = saveService.LoadGame();

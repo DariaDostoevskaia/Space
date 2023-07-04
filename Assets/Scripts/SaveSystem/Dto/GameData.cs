@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace SpaceGame.SaveSystem.Dto
 {
@@ -7,5 +8,11 @@ namespace SpaceGame.SaveSystem.Dto
     {
         public List<PlayerData> PlayersData = new List<PlayerData>();
         public List<EnemyData> EnemiesData = new List<EnemyData>();
+
+        public override string ToString()
+        {
+            var players = string.Join(", ", PlayersData.Select(playerData => playerData.ToString()));
+            return players;
+        }
     }
 }
