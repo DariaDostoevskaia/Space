@@ -46,6 +46,18 @@ namespace SpaceGame.Game
             while (HasAlivePlayer())
             {
                 yield return _wait;
+                //spawn emeny public
+
+                //тип энеми шип возврат
+                //вызвать этот метод из стартапа дл€ создани€ шаблона врагов
+                //у экземпл€ра возвращающий spawn enemy вызвать set Health и set Position дл€ загрузки
+
+                //доп
+                //сохр. врага когда он по€вилс€
+                //сохр хп когда оно мен€етс€
+                //сохр позицию когда мен€етс€
+                //удалить при уничтожении
+
                 var enemyShip = CreateEnemyShip();
                 enemyShip.SetTargets(players);
             }

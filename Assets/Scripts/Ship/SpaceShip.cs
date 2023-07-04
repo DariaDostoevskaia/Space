@@ -1,4 +1,5 @@
 using SpaceGame.Audio;
+using SpaceGame.SaveSystem;
 using SpaceGame.Weapon;
 using System;
 using UnityEngine;
@@ -26,7 +27,7 @@ namespace SpaceGame.Ship
 
         private void Awake()
         {
-            _currentHealth = _maxHealth;
+            SetHealth(_maxHealth);
         }
 
         private void Start()
@@ -97,6 +98,23 @@ namespace SpaceGame.Ship
             return true;
         }
 
+        public void SetHealth(float health)
+        {
+            _currentHealth = health;
+        }
+
+        public void Damage(float damage)
+        {
+            _currentHealth -= damage;
+            OnHealthChanged?.Invoke(_currentHealth);
+            if (IsLife())
+                return;
+
+            OnDestroyed?.Invoke();
+            Destroy(gameObject);
+            Instantiate(_explosion, gameObject.transform.position, Quaternion.identity);
+        }
+
         private bool IsLife()
         {
             return _currentHealth > 0;
@@ -120,18 +138,6 @@ namespace SpaceGame.Ship
             }
             laser.DestroyEnemy();
             Destroy(laser.gameObject);
-        }
-
-        public void Damage(float damage)
-        {
-            _currentHealth -= damage;
-            OnHealthChanged?.Invoke(_currentHealth);
-            if (IsLife())
-                return;
-
-            OnDestroyed?.Invoke();
-            Destroy(gameObject);
-            Instantiate(_explosion, gameObject.transform.position, Quaternion.identity);
         }
 
         private void OnDestroy()

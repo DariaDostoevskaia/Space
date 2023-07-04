@@ -26,7 +26,7 @@ namespace SpaceGame.UI
             SceneManager.LoadScene(1);
         }
 
-        private static void StartLoadedGame()
+        private void StartLoadedGame()
         {
             _loadGameButton.interactable = false;
             var saveService = new SaveService();

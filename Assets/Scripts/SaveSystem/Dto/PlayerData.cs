@@ -7,11 +7,13 @@ namespace SpaceGame.SaveSystem.Dto
     {
         public int Score;
         public float Health;
-        public Vector3 Position;
+        public float[] Positions;
 
         public override string ToString()
         {
-            return $"{nameof(Score)}: {Score}, {nameof(Health)}: {Health}";
+            return $"{nameof(Score)}: {Score};\n" +
+                $" {nameof(Health)}: {Health};\n" +
+                $" {nameof(Positions)}: {string.Join(";", Positions)}\n";
         }
     }
 }
