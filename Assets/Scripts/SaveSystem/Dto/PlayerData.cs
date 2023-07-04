@@ -7,6 +7,6 @@ namespace SpaceGame.SaveSystem.Dto
     {
         public int Score;
         public float Health;
-        //public Vector3 Position;
+        public Vector3 Position;
     }
 }

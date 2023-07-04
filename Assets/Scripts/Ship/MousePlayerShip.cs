@@ -34,7 +34,7 @@ namespace SpaceGame.Ship
         protected override void Movement()
         {
             base.Movement();
-            //GameContext.PlayerData1.Position = transform.position;
+            GameContext.PlayerData1.Position = transform.position;
         }
     }
 }
