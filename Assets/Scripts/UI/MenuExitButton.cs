@@ -16,6 +16,7 @@ namespace SpaceGame.UI
 
         public void LoadMainMenu()
         {
+            _menuExitButton.interactable = false;
             var saveService = new SaveService();
             saveService.SaveGame(GameContext.CurrentGameData);
             SceneManager.LoadScene(0);

@@ -21,12 +21,14 @@ namespace SpaceGame.UI
 
         private void StartNewGame()
         {
+            _startGameButton.interactable = false;
             GameContext.CurrentGameData = new GameData();
             SceneManager.LoadScene(1);
         }
 
-        private void StartLoadedGame()
+        private static void StartLoadedGame()
         {
+            _loadGameButton.interactable = false;
             var saveService = new SaveService();
             var gameData = saveService.LoadGame();
             GameContext.CurrentGameData = gameData;
@@ -35,6 +37,7 @@ namespace SpaceGame.UI
 
         private void EndGame()
         {
+            _endGameButton.interactable = false;
             Application.Quit();
         }
 
