@@ -83,12 +83,12 @@ namespace SpaceGame.Game
             UpdateSecondPlayerHealth(secondPlayer.CurrentHealth);
             UpdateFirstPlayerHealth(firstPlayer.CurrentHealth);
 
-            //OnPlayer1ScoreAdded - updatePlayerScore rename
-            //    OnPlayer2ScoreAdded
-
             _enemyFactory.SetUp(new PlayerShip[] { firstPlayer, secondPlayer });
 
-            _enemyFactory.StartSpawnEnemies();
+            //_enemyFactory.StartSpawnEnemies();
+            _enemyFactory.SpawnEnemy();
+            //_enemyFactory.SetHealth();
+            //_enemyFactory.SetPositionsEnemy();
 
             void TryKillPlayers(int count)
             {

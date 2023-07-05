@@ -57,10 +57,14 @@ namespace SpaceGame.Game
                 //сохр хп когда оно меняется
                 //сохр позицию когда меняется
                 //удалить при уничтожении
-
-                var enemyShip = CreateEnemyShip();
-                enemyShip.SetTargets(players);
             }
+        }
+
+        public EnemyShip SpawnEnemy()
+        {
+            var enemyShip = CreateEnemyShip();
+            enemyShip.SetTargets(players);
+            return enemyShip;
         }
 
         private EnemyShip CreateEnemyShip()
@@ -77,5 +81,17 @@ namespace SpaceGame.Game
                 _enemyRepository.Remove(enemyShip);
             }
         }
+
+        //private void SetHealth()
+        //{
+        //}
+
+        //public void SetPositionsEnemy(float[] positions)
+        //{
+        //     positions =                                                        //in EnemyShip?
+        //        { _enemyShipPrefab.transform.position.x ,
+        //            _enemyShipPrefab.transform.position.y,
+        //            _enemyShipPrefab.transform.position.z };
+        //}
     }
 }

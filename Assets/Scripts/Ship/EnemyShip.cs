@@ -1,3 +1,4 @@
+using SpaceGame.SaveSystem;
 using System.Collections;
 using System.Linq;
 using UnityEngine;
@@ -36,6 +37,7 @@ namespace SpaceGame.Ship
         protected override void Movement()
         {
             transform.position = transform.position + _delta * _speed;
+            GameContext.EnemysData.Positions = new[] { transform.position.x, transform.position.y, transform.position.z };
         }
 
         protected override void HandleTargetRotation()

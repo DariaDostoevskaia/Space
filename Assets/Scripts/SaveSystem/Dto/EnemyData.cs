@@ -6,6 +6,7 @@ namespace SpaceGame.SaveSystem.Dto
     public class EnemyData
     {
         public float Health;
-        public Vector3 Position;
+        public float Count;
+        public float[] Positions;
     }
 }
