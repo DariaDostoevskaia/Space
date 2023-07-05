@@ -3,8 +3,6 @@ using SpaceGame.ScoreSystem;
 using TMPro;
 using UnityEngine;
 using SpaceGame.SaveSystem;
-using System.Linq;
-using SpaceGame.SaveSystem.Dto;
 using SpaceGame.UI;
 
 namespace SpaceGame.Game
@@ -18,13 +16,7 @@ namespace SpaceGame.Game
 
         [SerializeField] private Transform _startedPosition;
 
-        [SerializeField] private TextMeshProUGUI _player1ScoreText;
-        [SerializeField] private TextMeshProUGUI _player2ScoreText;
-
         [SerializeField] private int _scorePerEnemy = 1;
-
-        [SerializeField] private TextMeshProUGUI _firstPlayerHealthText;
-        [SerializeField] private TextMeshProUGUI _secondPlayerHealthText;
 
         [SerializeField] private TextMeshProUGUI _enemyShipCountText;
         [SerializeField] private EnemyRepository _enemyRepository;
@@ -96,8 +88,8 @@ namespace SpaceGame.Game
 
         private void UpdateSecondPlayerHealth(float health)
         {
-            _secondPlayerHealthText.text = $"Player 2 Health: {health}";
             GameContext.PlayerData2.Health = health;
+            _hud.SetSecondPlayerHealthText(health);
         }
 
         private void OnEnemyCountChanged(int count)
@@ -107,14 +99,14 @@ namespace SpaceGame.Game
 
         private void OnPlayer1ScoreAdded(int score)
         {
-            _player1ScoreText.text = $"Player 1 Score: {score}";
             GameContext.PlayerData1.Score = score;
+            _hud.SetFirstPlayerScoreText(score);
         }
 
         private void OnPlayer2ScoreAdded(int score)
         {
-            _player2ScoreText.text = $"Player 2 Score: {score}";
             GameContext.PlayerData2.Score = score;
+            _hud.SetSecondPlayerScoreText(score);
         }
 
         private PlayerShip CreatePlayerShip(PlayerShip playerShipPrefab, Player player)

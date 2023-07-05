@@ -156,13 +156,10 @@ MonoBehaviour:
   _player2ShipPrefab: {fileID: 2617676815403356747, guid: 1d5b90fa40c43a34bafd08f15ded0d7a, type: 3}
   _enemyFactory: {fileID: 1643672878}
   _startedPosition: {fileID: 1588906777}
-  _player1ScoreText: {fileID: 1245009020}
-  _player2ScoreText: {fileID: 1969062245}
   _scorePerEnemy: 1
-  _firstPlayerHealthText: {fileID: 1569453610}
-  _secondPlayerHealthText: {fileID: 756210504}
   _enemyShipCountText: {fileID: 1363036910}
   _enemyRepository: {fileID: 2098381611}
+  _hud: {fileID: 0}
 --- !u!4 &57820432
 Transform:
   m_ObjectHideFlags: 0
@@ -1814,10 +1811,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 1622908117}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 44da9f2a565f1fe4ca4a7893910f2773, type: 3}
+  m_Script: {fileID: 11500000, guid: 47fd81d0919268f468881a14149bbe95, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _menuExitButton: {fileID: 1410145763}
+  _firstPlayerHealthText: {fileID: 0}
+  _secondPlayerHealthText: {fileID: 0}
+  _player1ScoreText: {fileID: 0}
+  _player2ScoreText: {fileID: 0}
 --- !u!1 &1643672877
 GameObject:
   m_ObjectHideFlags: 0
