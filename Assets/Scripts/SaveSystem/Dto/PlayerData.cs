@@ -1,5 +1,3 @@
-using UnityEngine;
-
 namespace SpaceGame.SaveSystem.Dto
 {
     [System.Serializable]

@@ -68,10 +68,6 @@ namespace SpaceGame.Game
             player1.OnScoreAdded += OnPlayer1ScoreAdded;
             player2.OnScoreAdded += OnPlayer2ScoreAdded;
 
-            //if (GameContext.CurrentGameData.PlayersData[0].Health > 0)
-            //{
-            //}
-
             var firstPlayer = CreatePlayerShip(_player1ShipPrefab, player1, GameContext.CurrentGameData.PlayersData[0]);
             var secondPlayer = CreatePlayerShip(_player2ShipPrefab, player2, GameContext.CurrentGameData.PlayersData[1]);
 
@@ -87,8 +83,6 @@ namespace SpaceGame.Game
 
             //_enemyFactory.StartSpawnEnemies();
             _enemyFactory.SpawnEnemy();
-            //_enemyFactory.SetHealth();
-            //_enemyFactory.SetPositionsEnemy();
 
             void TryKillPlayers(int count)
             {
@@ -114,6 +108,7 @@ namespace SpaceGame.Game
 
         private void OnEnemyCountChanged(int count)
         {
+            GameContext.EnemysData.Count = count;
             _enemyShipCountText.text = $"Enemy ship count: {count}";
         }
 
