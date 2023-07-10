@@ -3,8 +3,7 @@ using SpaceGame.ScoreSystem;
 using TMPro;
 using UnityEngine;
 using SpaceGame.SaveSystem;
-using System.Linq;
-using SpaceGame.SaveSystem.Dto;
+using SpaceGame.UI;
 
 namespace SpaceGame.Game
 {
@@ -17,17 +16,12 @@ namespace SpaceGame.Game
 
         [SerializeField] private Transform _startedPosition;
 
-        [SerializeField] private TextMeshProUGUI _player1ScoreText;
-        [SerializeField] private TextMeshProUGUI _player2ScoreText;
-
         [SerializeField] private int _scorePerEnemy = 1;
-
-        [SerializeField] private TextMeshProUGUI _firstPlayerHealthText;
-        [SerializeField] private TextMeshProUGUI _secondPlayerHealthText;
 
         [SerializeField] private TextMeshProUGUI _enemyShipCountText;
         [SerializeField] private EnemyRepository _enemyRepository;
 
+        [SerializeField] private HUD _hud;
         [SerializeField] private float _maxHealth = 10;
 
         private void Start()
@@ -39,11 +33,11 @@ namespace SpaceGame.Game
 
             Player player1 = null;
             Player player2 = null;
-
-            if (GameContext.CurrentGameData.PlayersData.Count == 2)
+            var playersData = GameContext.CurrentGameData.PlayersData;
+            if (playersData.Count == 2)
             {
-                var playerData1 = GameContext.CurrentGameData.PlayersData[0];
-                var playerData2 = GameContext.CurrentGameData.PlayersData[1];
+                var playerData1 = playersData[0];
+                var playerData2 = playersData[1];
 
                 player1 = playerFactory.CreatePlayer(playerData1);
                 player2 = playerFactory.CreatePlayer(playerData2);
@@ -93,12 +87,12 @@ namespace SpaceGame.Game
 
         private void UpdateFirstPlayerHealth(float health)
         {
-            _firstPlayerHealthText.text = $"Player 1 Health: {health}";
+            _hud.SetFirstPlayerHealthText(health);
         }
 
         private void UpdateSecondPlayerHealth(float health)
         {
-            _secondPlayerHealthText.text = $"Player 2 Health: {health}";
+            _hud.SetSecondPlayerHealthText(health);
         }
 
         private void OnEnemyCountChanged(int count)
@@ -108,12 +102,12 @@ namespace SpaceGame.Game
 
         private void OnPlayer1ScoreAdded(int score)
         {
-            _player1ScoreText.text = $"Player 1 Score: {score}";
+            _hud.SetFirstPlayerScoreText(score);
         }
 
         private void OnPlayer2ScoreAdded(int score)
         {
-            _player2ScoreText.text = $"Player 2 Score: {score}";
+            _hud.SetSecondPlayerScoreText(score);
         }
 
         private PlayerShip CreatePlayerShip(PlayerShip playerShipPrefab, Player player, PlayerData playerData)
