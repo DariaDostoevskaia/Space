@@ -94,31 +94,26 @@ namespace SpaceGame.Game
         private void UpdateFirstPlayerHealth(float health)
         {
             _firstPlayerHealthText.text = $"Player 1 Health: {health}";
-            GameContext.PlayerData1.Health = health;
         }
 
         private void UpdateSecondPlayerHealth(float health)
         {
             _secondPlayerHealthText.text = $"Player 2 Health: {health}";
-            GameContext.PlayerData2.Health = health;
         }
 
         private void OnEnemyCountChanged(int count)
         {
-            GameContext.EnemysData.Count = count;
             _enemyShipCountText.text = $"Enemy ship count: {count}";
         }
 
         private void OnPlayer1ScoreAdded(int score)
         {
             _player1ScoreText.text = $"Player 1 Score: {score}";
-            GameContext.PlayerData1.Score = score;
         }
 
         private void OnPlayer2ScoreAdded(int score)
         {
             _player2ScoreText.text = $"Player 2 Score: {score}";
-            GameContext.PlayerData2.Score = score;
         }
 
         private PlayerShip CreatePlayerShip(PlayerShip playerShipPrefab, Player player, PlayerData playerData)

@@ -1,10 +1,12 @@
 using SpaceGame.SaveSystem;
 using SpaceGame.SaveSystem.Dto;
 using SpaceGame.Ship;
+using System;
 using System.Collections;
 using System.Linq;
 using System.Threading;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace SpaceGame.Game
 {
@@ -18,7 +20,6 @@ namespace SpaceGame.Game
 
         [SerializeField] private EnemyRepository _enemyRepository;
 
-        private EnemyData _enemyData;
         private WaitForSeconds _wait;
         private PlayerShip[] players;
 
@@ -49,18 +50,24 @@ namespace SpaceGame.Game
             while (HasAlivePlayer())
             {
                 yield return _wait;
+                var enemyData = new SpaceShipData();
 
-                SpawnEnemy();
+                enemyData.Positions = new[] { enemyShip.transform.position.x, enemyShip.transform.position.y };
+                enemyData.Health = enemyShip.CurrentHealth;
+                enemyData.Id = enemyShip.Guid;
+
+                GameContext.CurrentGameData.EnemiesData.Add(enemyData);
+                SpawnEnemy(enemyData);
             }
         }
 
-        public EnemyShip SpawnEnemy()
+        public EnemyShip SpawnEnemy(SpaceShipData enemyData)
         {
             var enemyShip = CreateEnemyShip();
             enemyShip.SetTargets(players);
 
-            enemyShip.SetHealth(_enemyData.Health);
-            enemyShip.SetPositions(_enemyData.Positions);
+            enemyShip.SetHealth(enemyData.Health);
+            enemyShip.SetPositions(enemyData.Positions);
 
             return enemyShip;
         }
@@ -71,7 +78,7 @@ namespace SpaceGame.Game
             var position = new Vector3(positionX, _positionY, 0);
             var enemyShip = Instantiate(_enemyShipPrefab, position, Quaternion.identity);
 
-            GameContext.count += 1;
+            enemyShip.SetId(Guid.NewGuid());
 
             _enemyRepository.Add(enemyShip);
 
@@ -82,9 +89,6 @@ namespace SpaceGame.Game
             {
                 enemyShip.OnDestroyed -= OnDestroyed;
                 _enemyRepository.Remove(enemyShip);
-
-                PlayerPrefs.DeleteKey(GameContext.EnemysData.ToString());
-                GameContext.EnemysData.Count -= 1;
             }
         }
     }

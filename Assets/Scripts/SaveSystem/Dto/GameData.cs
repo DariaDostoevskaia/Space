@@ -7,7 +7,7 @@ namespace SpaceGame.SaveSystem.Dto
     public class GameData
     {
         public List<PlayerData> PlayersData = new List<PlayerData>();
-        public List<EnemyData> EnemiesData = new List<EnemyData>();
+        public List<SpaceShipData> EnemiesData = new List<SpaceShipData>();
 
         public override string ToString()
         {
@@ -20,6 +20,7 @@ namespace SpaceGame.SaveSystem.Dto
                 .ToString()));
 
             var allPlayers = new[] { players, enemies };
+
             return allPlayers[allPlayers.Length];
         }
     }

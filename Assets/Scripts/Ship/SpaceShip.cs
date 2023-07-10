@@ -1,6 +1,10 @@
 using SpaceGame.Audio;
+using SpaceGame.SaveSystem;
+using SpaceGame.SaveSystem.Dto;
 using SpaceGame.Weapon;
 using System;
+using System.Linq;
+using UnityEditor;
 using UnityEngine;
 
 namespace SpaceGame.Ship
@@ -23,6 +27,8 @@ namespace SpaceGame.Ship
         private float _timeNextFire;
 
         public float CurrentHealth => _currentHealth;
+
+        public Guid Guid { get; private set; }
 
         private void Awake()
         {
@@ -106,12 +112,22 @@ namespace SpaceGame.Ship
         {
             _currentHealth -= damage;
             OnHealthChanged?.Invoke(_currentHealth);
+
+            var shipData = GameContext.CurrentGameData.PlayersData.FirstOrDefault(playerData => playerData.Id == Guid)
+                ?? GameContext.CurrentGameData.EnemiesData.First(enemyData => enemyData.Id == Guid);
+            shipData.Health = _currentHealth;
+
             if (IsLife())
                 return;
 
             OnDestroyed?.Invoke();
             Destroy(gameObject);
             Instantiate(_explosion, gameObject.transform.position, Quaternion.identity);
+        }
+
+        public void SetId(Guid guid)
+        {
+            Guid = guid;
         }
 
         private bool IsLife()

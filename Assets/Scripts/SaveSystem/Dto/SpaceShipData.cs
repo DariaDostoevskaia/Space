@@ -1,17 +1,18 @@
-﻿using UnityEngine;
+using System;
 
 namespace SpaceGame.SaveSystem.Dto
 {
     [System.Serializable]
-    public class EnemyData
+    public class SpaceShipData
     {
         public float Health;
-        public float Count;
         public float[] Positions;
+
+        public Guid Id;
 
         public override string ToString()
         {
-            return $"{nameof(Count)}: {Count};\n" +
+            return $"{nameof(Id)}: {Id};\n" +
                 $" {nameof(Health)}: {Health};\n" +
                 $" {nameof(Positions)}: {string.Join(";", Positions)}\n";
         }

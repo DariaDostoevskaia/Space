@@ -42,7 +42,8 @@ namespace SpaceGame.Ship
         protected override void Movement()
         {
             transform.position = transform.position + _delta * _speed;
-            GameContext.EnemysData.Positions = new[] { transform.position.x, transform.position.y, transform.position.z };
+            var enemyData = GameContext.CurrentGameData.EnemiesData.First(enemyData => enemyData.Id == Guid);
+            enemyData.Positions = new[] { transform.position.x, transform.position.y };
         }
 
         protected override void HandleTargetRotation()
@@ -73,17 +74,9 @@ namespace SpaceGame.Ship
             return _player != null;
         }
 
-        public void SetPositions(float[] positions/*, [id]*/)
+        public void SetPositions(float[] positions)
         {
-            var count = GameContext.EnemysData.Count;
-            for (int i = 0/*=id*/; i < count; i++)
-            {
-                positions = new[] { _enemyShip.transform.position.x,
-                    _enemyShip.transform.position.y,
-                    _enemyShip.transform.position.z };
-
-                positions[i] = GameContext.EnemysData.Positions[i];
-            }
+            transform.position = new Vector3(positions[0], positions[1], transform.position.z);
         }
 
         private PlayerShip FindRandomAlivePlayer(PlayerShip[] players)
