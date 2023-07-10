@@ -1,5 +1,4 @@
-﻿using SpaceGame.SaveSystem;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace SpaceGame.Ship
 {
@@ -29,12 +28,6 @@ namespace SpaceGame.Ship
         protected override void Rotation()
         {
             transform.rotation = _rotation;
-        }
-
-        protected override void Movement()
-        {
-            base.Movement();
-            GameContext.PlayerData1.Positions = new[] { transform.position.x, transform.position.y };
         }
     }
 }

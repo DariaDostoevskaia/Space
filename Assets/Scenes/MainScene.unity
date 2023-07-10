@@ -157,9 +157,9 @@ MonoBehaviour:
   _enemyFactory: {fileID: 1643672878}
   _startedPosition: {fileID: 1588906777}
   _scorePerEnemy: 1
-  _enemyShipCountText: {fileID: 1363036910}
   _enemyRepository: {fileID: 2098381611}
   _hud: {fileID: 0}
+  _maxHealth: 10
 --- !u!4 &57820432
 Transform:
   m_ObjectHideFlags: 0
@@ -2052,7 +2052,6 @@ RectTransform:
   - {fileID: 1410145762}
   - {fileID: 1363036909}
   - {fileID: 1447022452}
-  - {fileID: 1410145762}
   - {fileID: 808588161}
   m_Father: {fileID: 1453471345}
   m_RootOrder: 0
@@ -2075,6 +2074,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _menuExitButton: {fileID: 1410145763}
+  _firstPlayerHealthText: {fileID: 1569453610}
+  _secondPlayerHealthText: {fileID: 756210504}
+  _player1ScoreText: {fileID: 1245009020}
+  _player2ScoreText: {fileID: 1969062245}
+  _enemyShipCountText: {fileID: 1363036910}
 --- !u!114 &1622908120
 MonoBehaviour:
   m_ObjectHideFlags: 0

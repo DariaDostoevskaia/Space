@@ -1,9 +1,9 @@
 using SpaceGame.Ship;
 using SpaceGame.ScoreSystem;
-using TMPro;
 using UnityEngine;
 using SpaceGame.SaveSystem;
 using SpaceGame.UI;
+using SpaceGame.SaveSystem.Dto;
 
 namespace SpaceGame.Game
 {
@@ -18,7 +18,6 @@ namespace SpaceGame.Game
 
         [SerializeField] private int _scorePerEnemy = 1;
 
-        [SerializeField] private TextMeshProUGUI _enemyShipCountText;
         [SerializeField] private EnemyRepository _enemyRepository;
 
         [SerializeField] private HUD _hud;
@@ -34,6 +33,7 @@ namespace SpaceGame.Game
             Player player1 = null;
             Player player2 = null;
             var playersData = GameContext.CurrentGameData.PlayersData;
+
             if (playersData.Count == 2)
             {
                 var playerData1 = playersData[0];
@@ -65,6 +65,9 @@ namespace SpaceGame.Game
             var firstPlayer = CreatePlayerShip(_player1ShipPrefab, player1, GameContext.CurrentGameData.PlayersData[0]);
             var secondPlayer = CreatePlayerShip(_player2ShipPrefab, player2, GameContext.CurrentGameData.PlayersData[1]);
 
+            player1.SetShipId(firstPlayer.Guid);
+            player2.SetShipId(secondPlayer.Guid);
+
             _enemyRepository.OnEnemyAdded += TryKillPlayers;
 
             firstPlayer.OnHealthChanged += UpdateFirstPlayerHealth;
@@ -73,8 +76,12 @@ namespace SpaceGame.Game
             UpdateSecondPlayerHealth(secondPlayer.CurrentHealth);
             UpdateFirstPlayerHealth(firstPlayer.CurrentHealth);
 
-            _enemyFactory.SetUp(new PlayerShip[] { firstPlayer, secondPlayer });
+            _enemyFactory.SetUp(new PlayerShip[] { firstPlayer, secondPlayer }, _maxHealth);
 
+            foreach (var enemyData in GameContext.CurrentGameData.EnemiesData)
+            {
+                _enemyFactory.SpawnEnemy(enemyData);
+            }
             void TryKillPlayers(int count)
             {
                 if (count == 10)
@@ -97,7 +104,7 @@ namespace SpaceGame.Game
 
         private void OnEnemyCountChanged(int count)
         {
-            _enemyShipCountText.text = $"Enemy ship count: {count}";
+            _hud.SetEnemyCount(count);
         }
 
         private void OnPlayer1ScoreAdded(int score)

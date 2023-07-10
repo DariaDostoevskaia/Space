@@ -11,8 +11,6 @@ namespace SpaceGame.Ship
         [SerializeField] private float _speed = 1.5f;
         [SerializeField] private float _firstShootDelay = 3;
 
-        private EnemyShip _enemyShip;
-
         private PlayerShip _player;
         private PlayerShip[] _players;
 
@@ -72,11 +70,6 @@ namespace SpaceGame.Ship
         protected override bool IsMovementReady()
         {
             return _player != null;
-        }
-
-        public void SetPositions(float[] positions)
-        {
-            transform.position = new Vector3(positions[0], positions[1], transform.position.z);
         }
 
         private PlayerShip FindRandomAlivePlayer(PlayerShip[] players)

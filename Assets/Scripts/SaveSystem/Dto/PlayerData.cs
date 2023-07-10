@@ -1,5 +1,3 @@
-using System;
-
 namespace SpaceGame.SaveSystem.Dto
 {
     [System.Serializable]
