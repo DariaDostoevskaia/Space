@@ -2,6 +2,7 @@ using SpaceGame.SaveSystem;
 using System.Collections;
 using System.Linq;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace SpaceGame.Ship
 {
@@ -9,8 +10,12 @@ namespace SpaceGame.Ship
     {
         [SerializeField] private float _speed = 1.5f;
         [SerializeField] private float _firstShootDelay = 3;
+
+        private EnemyShip _enemyShip;
+
         private PlayerShip _player;
         private PlayerShip[] _players;
+
         private Vector3 _delta;
         private Quaternion _rotation;
 
@@ -66,6 +71,19 @@ namespace SpaceGame.Ship
         protected override bool IsMovementReady()
         {
             return _player != null;
+        }
+
+        public void SetPositions(float[] positions/*, [id]*/)
+        {
+            var count = GameContext.EnemysData.Count;
+            for (int i = 0/*=id*/; i < count; i++)
+            {
+                positions = new[] { _enemyShip.transform.position.x,
+                    _enemyShip.transform.position.y,
+                    _enemyShip.transform.position.z };
+
+                positions[i] = GameContext.EnemysData.Positions[i];
+            }
         }
 
         private PlayerShip FindRandomAlivePlayer(PlayerShip[] players)

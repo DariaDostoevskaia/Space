@@ -19,7 +19,8 @@ namespace SpaceGame.SaveSystem.Dto
                 .Select(enemiesData => enemiesData
                 .ToString()));
 
-            return players;
+            var allPlayers = new[] { players, enemies };
+            return allPlayers[allPlayers.Length];
         }
     }
 }

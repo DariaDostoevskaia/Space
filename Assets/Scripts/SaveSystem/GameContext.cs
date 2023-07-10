@@ -4,7 +4,7 @@ namespace SpaceGame.SaveSystem
 {
     public static class GameContext
     {
-        public static int count;
+        public static int count /*= GameContext.EnemysData.Count*/;
         public static GameData CurrentGameData { get; set; }
 
         public static PlayerData PlayerData1 => CurrentGameData.PlayersData[0];

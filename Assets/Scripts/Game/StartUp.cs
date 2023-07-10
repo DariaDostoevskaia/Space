@@ -81,9 +81,6 @@ namespace SpaceGame.Game
 
             _enemyFactory.SetUp(new PlayerShip[] { firstPlayer, secondPlayer });
 
-            //_enemyFactory.StartSpawnEnemies();
-            _enemyFactory.SpawnEnemy();
-
             void TryKillPlayers(int count)
             {
                 if (count == 10)

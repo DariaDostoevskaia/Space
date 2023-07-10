@@ -1,7 +1,9 @@
+using SpaceGame.SaveSystem;
 using SpaceGame.SaveSystem.Dto;
 using SpaceGame.Ship;
 using System.Collections;
 using System.Linq;
+using System.Threading;
 using UnityEngine;
 
 namespace SpaceGame.Game
@@ -47,27 +49,18 @@ namespace SpaceGame.Game
             while (HasAlivePlayer())
             {
                 yield return _wait;
-                //spawn emeny public
 
-                //тип энеми шип возврат
-                //вызвать этот метод из стартапа дл€ создани€ шаблона врагов
-                //у экземпл€ра возвращающий spawn enemy вызвать set Health и set Position дл€ загрузки
-
-                //доп
-                //сохр. врага когда он по€вилс€
-                //сохр хп когда оно мен€етс€
-                //сохр позицию когда мен€етс€
-                //удалить при уничтожении
+                SpawnEnemy();
             }
         }
 
         public EnemyShip SpawnEnemy()
         {
             var enemyShip = CreateEnemyShip();
+            enemyShip.SetTargets(players);
 
             enemyShip.SetHealth(_enemyData.Health);
-
-            enemyShip.SetTargets(players);
+            enemyShip.SetPositions(_enemyData.Positions);
 
             return enemyShip;
         }
@@ -78,15 +71,20 @@ namespace SpaceGame.Game
             var position = new Vector3(positionX, _positionY, 0);
             var enemyShip = Instantiate(_enemyShipPrefab, position, Quaternion.identity);
 
-            _enemyRepository.Add(enemyShip);
-            enemyShip.OnDestroyed += OnDestroyed;
+            GameContext.count += 1;
 
+            _enemyRepository.Add(enemyShip);
+
+            enemyShip.OnDestroyed += OnDestroyed;
             return enemyShip;
 
             void OnDestroyed()
             {
                 enemyShip.OnDestroyed -= OnDestroyed;
                 _enemyRepository.Remove(enemyShip);
+
+                PlayerPrefs.DeleteKey(GameContext.EnemysData.ToString());
+                GameContext.EnemysData.Count -= 1;
             }
         }
     }
