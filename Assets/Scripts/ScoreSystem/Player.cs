@@ -4,6 +4,12 @@ using System.Linq;
 
 namespace SpaceGame.ScoreSystem
 {
+    public enum PlayerIndex
+    {
+        First = 0,
+        Second = 1
+    }
+
     public class Player
     {
         public event Action<int> OnScoreAdded;
@@ -11,9 +17,12 @@ namespace SpaceGame.ScoreSystem
         private Score _score;
         private Guid _spaceShipId;
 
-        public Player(Score score)
+        public PlayerIndex Id { get; }
+
+        public Player(Score score, PlayerIndex id)
         {
             _score = score;
+            Id = id;
         }
 
         public void SetShipId(Guid spaceShipId)

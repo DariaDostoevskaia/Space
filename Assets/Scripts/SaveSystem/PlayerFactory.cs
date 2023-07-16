@@ -5,11 +5,11 @@ namespace SpaceGame.SaveSystem
 {
     public class PlayerFactory
     {
-        public Player CreatePlayer(PlayerData playerData = null)
+        public Player CreatePlayer(PlayerIndex playerIndex, PlayerData playerData = null)
         {
             var scoreValue = playerData?.Score ?? 0;
             var score = new Score(scoreValue);
-            var player = new Player(score);
+            var player = new Player(score, playerIndex);
             return player;
         }
 

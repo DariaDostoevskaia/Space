@@ -25,7 +25,7 @@ namespace SpaceGame.UI
         {
             var saveService = new SaveService();
             saveService.SaveGame(GameContext.CurrentGameData);
-            SceneManager.LoadScene(0);
+            SceneManager.LoadScene((int)Scene.Menu);
         }
 
         public void SetPlayerHealthText(float health)

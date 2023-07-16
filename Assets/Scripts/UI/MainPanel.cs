@@ -11,28 +11,31 @@ namespace SpaceGame.UI
         [SerializeField] private Button _startGameButton;
         [SerializeField] private Button _loadGameButton;
         [SerializeField] private Button _endGameButton;
+        private SaveService _saveService;
 
         private void Start()
         {
             _startGameButton.onClick.AddListener(StartNewGame);
             _loadGameButton.onClick.AddListener(StartLoadedGame);
             _endGameButton.onClick.AddListener(EndGame);
+
+            _saveService = new SaveService();
+            _loadGameButton.gameObject.SetActive(_saveService.HasSave());
         }
 
         private void StartNewGame()
         {
             _startGameButton.interactable = false;
             GameContext.CurrentGameData = new GameData();
-            SceneManager.LoadScene(1);
+            SceneManager.LoadScene((int)Scene.Main);
         }
 
         private void StartLoadedGame()
         {
             _loadGameButton.interactable = false;
-            var saveService = new SaveService();
-            var gameData = saveService.LoadGame();
+            var gameData = _saveService.LoadGame();
             GameContext.CurrentGameData = gameData;
-            SceneManager.LoadScene(1);
+            SceneManager.LoadScene((int)Scene.Main);
         }
 
         private void EndGame()

@@ -11,9 +11,6 @@ namespace SpaceGame.Game
 {
     public class StartUp : MonoBehaviour
     {
-        [SerializeField] private MousePlayerShip _player1ShipPrefab;
-        [SerializeField] private KeyBoardPlayerShip _player2ShipPrefab;
-
         [SerializeField] private EnemyFactory _enemyFactory;
 
         [SerializeField] private Transform _startedPosition;
@@ -26,7 +23,8 @@ namespace SpaceGame.Game
         [SerializeField] private float _maxHealth = 10;
 
         [SerializeField] private int _playersNumber = 2;
-        private Player _player;
+
+        [SerializeField] private PlayerShip[] _playerShipPrefabs;
 
         private void Start()
         {
@@ -35,68 +33,59 @@ namespace SpaceGame.Game
 
             var playerFactory = new PlayerFactory();
 
-            List<Player> listOfGameObjects = new List<Player>();
-            Player[] playersArray = listOfGameObjects.ToArray();
+            var playersData = GameContext.CurrentGameData.PlayersData;
+            while (playersData.Count < _playersNumber)
+            {
+                var index = _playersNumber - playersData.Count - 1;
+                var player = playerFactory.CreatePlayer((PlayerIndex)index);
+
+                var playerData = playerFactory.CreatePlayerData(player);
+
+                playerData.Health = _maxHealth;
+                playerData.Positions = new float[] { _startedPosition.position.x, _startedPosition.position.y };
+
+                playersData.Add(playerData);
+            }
+
+            var playerShips = new PlayerShip[_playersNumber];
 
             for (int i = 0; i < _playersNumber; i++)
             {
-                _player = playersArray[i];
-                listOfGameObjects.Add(playersArray[i]);
+                CreatePlayerAndShip(i);
             }
 
-            var playersData = GameContext.CurrentGameData.PlayersData;
-
-            if (playersData.Count == 2)
-            {
-                var playerData = playersData[0];
-
-                _player = playerFactory.CreatePlayer(playerData);
-            }
-            else
-            {
-                _player = playerFactory.CreatePlayer();
-
-                var playerData = playerFactory.CreatePlayerData(_player);
-
-                playerData.Health = _maxHealth;
-
-                playerData.Positions = new float[] { _startedPosition.position.x, _startedPosition.position.y };
-
-                GameContext.CurrentGameData.PlayersData.Add(playerData);
-            }
-
-            _player.OnScoreAdded += OnPlayerScoreAdded;
-
-            var playerShip = CreatePlayerShip(RandomPlayerPrefab(), _player, GameContext.CurrentGameData.PlayersData[0]);
-
-            _player.SetShipId(playerShip.Guid);
-
-            _enemyRepository.OnEnemyAdded += TryKillPlayers;
-
-            playerShip.OnHealthChanged += UpdatePlayerHealth;
-
-            UpdatePlayerHealth(playerShip.CurrentHealth);
-
-            _enemyFactory.SetUp(new PlayerShip[] { playerShip }, _maxHealth);
+            _enemyFactory.SetUp(playerShips, _maxHealth);
+            _enemyFactory.StartSpawnEnemies();
 
             foreach (var enemyData in GameContext.CurrentGameData.EnemiesData)
             {
                 _enemyFactory.SpawnEnemy(enemyData);
             }
-            void TryKillPlayers(int count)
+
+            void CreatePlayerAndShip(int index)
             {
-                if (count == 10)
+                var playerData = playersData[index];
+                var player = playerFactory.CreatePlayer((PlayerIndex)index, playerData);
+
+                player.OnScoreAdded += OnPlayerScoreAdded;
+
+                var playerShip = CreatePlayerShip(_playerShipPrefabs[index], player, playerData);
+                player.SetShipId(playerShip.Guid);
+
+                playerShips[index] = playerShip;
+
+                UpdateFirstPlayerHealth(playerShip.CurrentHealth);
+
+                _enemyRepository.OnEnemyAdded += TryKillPlayers;
+
+                void TryKillPlayers(int count)
                 {
-                    playerShip.Damage(playerShip.CurrentHealth);
+                    if (count == 10)
+                    {
+                        playerShip.Damage(playerShip.CurrentHealth);
+                    }
                 }
             }
-        }
-
-        private PlayerShip RandomPlayerPrefab()
-        {
-            PlayerShip[] playersPrefab = { _player1ShipPrefab, _player2ShipPrefab };
-            var playerIndex = Random.Range(0, playersPrefab.Length);
-            return playersPrefab[playerIndex];
         }
 
         private void OnEnemyCountChanged(int count)
@@ -104,7 +93,7 @@ namespace SpaceGame.Game
             _hud.SetEnemyCount(count);
         }
 
-        private void UpdatePlayerHealth(float health)
+        private void UpdateFirstPlayerHealth(float health)
         {
             _hud.SetPlayerHealthText(health);
         }
@@ -123,14 +112,23 @@ namespace SpaceGame.Game
 
             playerShip.OnEnemyDestroyed += OnEnemyDestroyed;
             playerShip.OnDestroyed += OnDestroyed;
+            playerShip.OnHealthChanged += OnPlayerHealthChanged;
+
             return playerShip;
             void OnEnemyDestroyed()
             {
                 player.AddScore(_scorePerEnemy);
             }
+            void OnPlayerHealthChanged(float health)
+            {
+                if (player.Id == PlayerIndex.First)
+                    UpdateFirstPlayerHealth(health);
+                //if (player.Id == PlayerIndex.Second)
+                //    UpdateSecondPlayerHealth(health);
+            }
             void OnDestroyed()
             {
-                playerShip.OnHealthChanged -= UpdatePlayerHealth;
+                playerShip.OnHealthChanged -= OnPlayerHealthChanged;
 
                 playerShip.OnEnemyDestroyed -= OnEnemyDestroyed;
                 playerShip.OnDestroyed -= OnDestroyed;

@@ -1229,10 +1229,6 @@ MonoBehaviour:
   _startGameButton: {fileID: 1329737633}
   _loadGameButton: {fileID: 1614597960}
   _endGameButton: {fileID: 521956698}
-  _playerData:
-    level: 0
-    health: 0
-    position: []
 --- !u!1 &1947041709
 GameObject:
   m_ObjectHideFlags: 0
