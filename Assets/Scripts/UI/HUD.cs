@@ -10,11 +10,11 @@ namespace SpaceGame.UI
     {
         [SerializeField] private Button _menuExitButton;
 
-        [SerializeField] private TextMeshPro _firstPlayerHealthText;
-        [SerializeField] private TextMeshPro _secondPlayerHealthText;
+        [SerializeField] private TextMeshProUGUI _playersHealthText;
 
-        [SerializeField] private TextMeshPro _player1ScoreText;
-        [SerializeField] private TextMeshPro _player2ScoreText;
+        [SerializeField] private TextMeshProUGUI _playersScoreText;
+
+        [SerializeField] private TextMeshProUGUI _enemyShipCountText;
 
         public void Start()
         {
@@ -25,27 +25,22 @@ namespace SpaceGame.UI
         {
             var saveService = new SaveService();
             saveService.SaveGame(GameContext.CurrentGameData);
-            SceneManager.LoadScene(0);
+            SceneManager.LoadScene((int)Scene.Menu);
         }
 
-        public void SetFirstPlayerHealthText(float health)
+        public void SetPlayerHealthText(float health)
         {
-            _firstPlayerHealthText.text = $"Player 1 Health: {health}";
+            _playersHealthText.text = $"Player Health: {health}";
         }
 
-        public void SetSecondPlayerHealthText(float health)
+        public void SetPlayerScoreText(int score)
         {
-            _secondPlayerHealthText.text = $"Player 2 Health: {health}";
+            _playersScoreText.text = $"Player Score: {score}";
         }
 
-        public void SetFirstPlayerScoreText(int score)
+        public void SetEnemyCount(int count)
         {
-            _player1ScoreText.text = $"Player 1 Score: {score}";
-        }
-
-        public void SetSecondPlayerScoreText(int score)
-        {
-            _player2ScoreText.text = $"Player 2 Score: {score}";
+            _enemyShipCountText.text = $"Enemy ship count: {count}";
         }
 
         public void OnDestroy()

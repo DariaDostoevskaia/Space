@@ -1,6 +1,8 @@
 using SpaceGame.Audio;
+using SpaceGame.SaveSystem;
 using SpaceGame.Weapon;
 using System;
+using System.Linq;
 using UnityEngine;
 
 namespace SpaceGame.Ship
@@ -24,9 +26,11 @@ namespace SpaceGame.Ship
 
         public float CurrentHealth => _currentHealth;
 
+        public Guid Guid { get; private set; }
+
         private void Awake()
         {
-            _currentHealth = _maxHealth;
+            SetHealth(_maxHealth);
         }
 
         private void Start()
@@ -97,6 +101,33 @@ namespace SpaceGame.Ship
             return true;
         }
 
+        public void SetHealth(float health)
+        {
+            _currentHealth = health;
+        }
+
+        public void Damage(float damage)
+        {
+            _currentHealth -= damage;
+            OnHealthChanged?.Invoke(_currentHealth);
+
+            var shipData = GameContext.CurrentGameData.PlayersData.FirstOrDefault(playerData => playerData.Id == Guid)
+                ?? GameContext.CurrentGameData.EnemiesData.First(enemyData => enemyData.Id == Guid);
+            shipData.Health = _currentHealth;
+
+            if (IsLife())
+                return;
+
+            OnDestroyed?.Invoke();
+            Destroy(gameObject);
+            Instantiate(_explosion, gameObject.transform.position, Quaternion.identity);
+        }
+
+        public void SetId(Guid guid)
+        {
+            Guid = guid;
+        }
+
         private bool IsLife()
         {
             return _currentHealth > 0;
@@ -120,18 +151,6 @@ namespace SpaceGame.Ship
             }
             laser.DestroyEnemy();
             Destroy(laser.gameObject);
-        }
-
-        public void Damage(float damage)
-        {
-            _currentHealth -= damage;
-            OnHealthChanged?.Invoke(_currentHealth);
-            if (IsLife())
-                return;
-
-            OnDestroyed?.Invoke();
-            Destroy(gameObject);
-            Instantiate(_explosion, gameObject.transform.position, Quaternion.identity);
         }
 
         private void OnDestroy()

@@ -1,6 +1,8 @@
+using SpaceGame.SaveSystem;
 using System.Collections;
 using System.Linq;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace SpaceGame.Ship
 {
@@ -8,8 +10,10 @@ namespace SpaceGame.Ship
     {
         [SerializeField] private float _speed = 1.5f;
         [SerializeField] private float _firstShootDelay = 3;
+
         private PlayerShip _player;
         private PlayerShip[] _players;
+
         private Vector3 _delta;
         private Quaternion _rotation;
 
@@ -36,6 +40,8 @@ namespace SpaceGame.Ship
         protected override void Movement()
         {
             transform.position = transform.position + _delta * _speed;
+            var enemyData = GameContext.CurrentGameData.EnemiesData.First(enemyData => enemyData.Id == Guid);
+            enemyData.Positions = new[] { transform.position.x, transform.position.y };
         }
 
         protected override void HandleTargetRotation()

@@ -7,12 +7,21 @@ namespace SpaceGame.SaveSystem.Dto
     public class GameData
     {
         public List<PlayerData> PlayersData = new List<PlayerData>();
-        public List<EnemyData> EnemiesData = new List<EnemyData>();
+        public List<SpaceShipData> EnemiesData = new List<SpaceShipData>();
 
         public override string ToString()
         {
-            var players = string.Join(", ", PlayersData.Select(playerData => playerData.ToString()));
-            return players;
+            var players = string.Join(", ", PlayersData
+                .Select(playerData => playerData
+                .ToString()));
+
+            var enemies = string.Join(", ", EnemiesData
+                .Select(enemiesData => enemiesData
+                .ToString()));
+
+            var allPlayers = new[] { players, enemies };
+
+            return allPlayers[allPlayers.Length];
         }
     }
 }

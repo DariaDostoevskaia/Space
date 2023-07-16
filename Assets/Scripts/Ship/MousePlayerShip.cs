@@ -29,11 +29,5 @@ namespace SpaceGame.Ship
         {
             transform.rotation = _rotation;
         }
-
-        protected override void Movement()
-        {
-            base.Movement();
-            //GameContext.PlayerData1.Position = transform.position;
-        }
     }
 }

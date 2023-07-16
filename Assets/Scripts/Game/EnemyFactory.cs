@@ -1,8 +1,11 @@
+using SpaceGame.SaveSystem;
+using SpaceGame.SaveSystem.Dto;
 using SpaceGame.Ship;
+using System;
 using System.Collections;
 using System.Linq;
-using TMPro;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace SpaceGame.Game
 {
@@ -18,15 +21,17 @@ namespace SpaceGame.Game
 
         private WaitForSeconds _wait;
         private PlayerShip[] players;
+        private float _maxHealth;
 
         private void Start()
         {
             _wait = new WaitForSeconds(_spawnDelay);
         }
 
-        public void SetUp(PlayerShip[] playerShips)
+        public void SetUp(PlayerShip[] playerShips, float maxHealth)
         {
             players = playerShips;
+            _maxHealth = maxHealth;
         }
 
         public void StartSpawnEnemies()
@@ -46,19 +51,40 @@ namespace SpaceGame.Game
             while (HasAlivePlayer())
             {
                 yield return _wait;
-                var enemyShip = CreateEnemyShip();
-                enemyShip.SetTargets(players);
+                var enemyData = new SpaceShipData();
+
+                var positionX = Random.Range(_minPositionX, _maxPositionX);
+
+                enemyData.Positions = new[] { positionX, _positionY };
+                enemyData.Health = _maxHealth;
+                enemyData.Id = Guid.NewGuid();
+
+                GameContext.CurrentGameData.EnemiesData.Add(enemyData);
+                SpawnEnemy(enemyData);
             }
         }
 
-        private EnemyShip CreateEnemyShip()
+        public EnemyShip SpawnEnemy(SpaceShipData enemyData)
         {
-            var positionX = Random.Range(_minPositionX, _maxPositionX);
-            var position = new Vector3(positionX, _positionY, 0);
+            var position = new Vector3(enemyData.Positions[0], enemyData.Positions[1], 0);
+            var enemyShip = CreateEnemyShip(position);
+            enemyShip.SetTargets(players);
+
+            enemyShip.SetHealth(enemyData.Health);
+            enemyShip.SetId(enemyData.Id);
+
+            return enemyShip;
+        }
+
+        private EnemyShip CreateEnemyShip(Vector3 position)
+        {
             var enemyShip = Instantiate(_enemyShipPrefab, position, Quaternion.identity);
+
             _enemyRepository.Add(enemyShip);
+
             enemyShip.OnDestroyed += OnDestroyed;
             return enemyShip;
+
             void OnDestroyed()
             {
                 enemyShip.OnDestroyed -= OnDestroyed;

@@ -1,27 +1,30 @@
 using SpaceGame.Ship;
 using SpaceGame.ScoreSystem;
-using TMPro;
 using UnityEngine;
 using SpaceGame.SaveSystem;
 using SpaceGame.UI;
+using SpaceGame.SaveSystem.Dto;
+using System.Collections.Generic;
+using static UnityEditor.Experimental.GraphView.GraphView;
 
 namespace SpaceGame.Game
 {
     public class StartUp : MonoBehaviour
     {
-        [SerializeField] private MousePlayerShip _player1ShipPrefab;
-        [SerializeField] private KeyBoardPlayerShip _player2ShipPrefab;
-
         [SerializeField] private EnemyFactory _enemyFactory;
 
         [SerializeField] private Transform _startedPosition;
 
         [SerializeField] private int _scorePerEnemy = 1;
 
-        [SerializeField] private TextMeshProUGUI _enemyShipCountText;
         [SerializeField] private EnemyRepository _enemyRepository;
 
         [SerializeField] private HUD _hud;
+        [SerializeField] private float _maxHealth = 10;
+
+        [SerializeField] private int _playersNumber = 2;
+
+        [SerializeField] private PlayerShip[] _playerShipPrefabs;
 
         private void Start()
         {
@@ -30,104 +33,107 @@ namespace SpaceGame.Game
 
             var playerFactory = new PlayerFactory();
 
-            Player player1 = null;
-            Player player2 = null;
             var playersData = GameContext.CurrentGameData.PlayersData;
-            if (playersData.Count == 2)
+            while (playersData.Count < _playersNumber)
             {
-                var playerData1 = playersData[0];
-                var playerData2 = playersData[1];
+                var index = _playersNumber - playersData.Count - 1;
+                var player = playerFactory.CreatePlayer((PlayerIndex)index);
 
-                player1 = playerFactory.CreatePlayer(playerData1);
-                player2 = playerFactory.CreatePlayer(playerData2);
-            }
-            else
-            {
-                player1 = playerFactory.CreatePlayer();
-                player2 = playerFactory.CreatePlayer();
+                var playerData = playerFactory.CreatePlayerData(player);
 
-                var playerData1 = playerFactory.CreatePlayerData(player1);
-                var playerData2 = playerFactory.CreatePlayerData(player2);
+                playerData.Health = _maxHealth;
+                playerData.Positions = new float[] { _startedPosition.position.x, _startedPosition.position.y };
 
-                playersData.Add(playerData1);
-                playersData.Add(playerData2);
+                playersData.Add(playerData);
             }
 
-            player1.OnScoreAdded += OnPlayer1ScoreAdded;
-            player2.OnScoreAdded += OnPlayer2ScoreAdded;
+            var playerShips = new PlayerShip[_playersNumber];
 
-            var firstPlayer = CreatePlayerShip(_player1ShipPrefab, player1);
-            var secondPlayer = CreatePlayerShip(_player2ShipPrefab, player2);
+            for (int i = 0; i < _playersNumber; i++)
+            {
+                CreatePlayerAndShip(i);
+            }
 
-            _enemyRepository.OnEnemyAdded += TryKillPlayers;
-
-            firstPlayer.OnHealthChanged += UpdateFirstPlayerHealth;
-            secondPlayer.OnHealthChanged += UpdateSecondPlayerHealth;
-
-            UpdateFirstPlayerHealth(firstPlayer.CurrentHealth);
-            UpdateSecondPlayerHealth(secondPlayer.CurrentHealth);
-
-            _enemyFactory.SetUp(new PlayerShip[] { firstPlayer, secondPlayer });
+            _enemyFactory.SetUp(playerShips, _maxHealth);
             _enemyFactory.StartSpawnEnemies();
 
-            void TryKillPlayers(int count)
+            foreach (var enemyData in GameContext.CurrentGameData.EnemiesData)
             {
-                if (count == 10)
+                _enemyFactory.SpawnEnemy(enemyData);
+            }
+
+            void CreatePlayerAndShip(int index)
+            {
+                var playerData = playersData[index];
+                var player = playerFactory.CreatePlayer((PlayerIndex)index, playerData);
+
+                player.OnScoreAdded += OnPlayerScoreAdded;
+
+                var playerShip = CreatePlayerShip(_playerShipPrefabs[index], player, playerData);
+                player.SetShipId(playerShip.Guid);
+
+                playerShips[index] = playerShip;
+
+                UpdateFirstPlayerHealth(playerShip.CurrentHealth);
+
+                _enemyRepository.OnEnemyAdded += TryKillPlayers;
+
+                void TryKillPlayers(int count)
                 {
-                    firstPlayer.Damage(firstPlayer.CurrentHealth);
-                    secondPlayer.Damage(secondPlayer.CurrentHealth);
+                    if (count == 10)
+                    {
+                        playerShip.Damage(playerShip.CurrentHealth);
+                    }
                 }
             }
         }
 
-        private void UpdateFirstPlayerHealth(float health)
-        {
-            GameContext.PlayerData1.Health = health;
-            _hud.SetFirstPlayerHealthText(health);
-        }
-
-        private void UpdateSecondPlayerHealth(float health)
-        {
-            GameContext.PlayerData2.Health = health;
-            _hud.SetSecondPlayerHealthText(health);
-        }
-
         private void OnEnemyCountChanged(int count)
         {
-            _enemyShipCountText.text = $"Enemy ship count: {count}";
+            _hud.SetEnemyCount(count);
         }
 
-        private void OnPlayer1ScoreAdded(int score)
+        private void UpdateFirstPlayerHealth(float health)
         {
-            GameContext.PlayerData1.Score = score;
-            _hud.SetFirstPlayerScoreText(score);
+            _hud.SetPlayerHealthText(health);
         }
 
-        private void OnPlayer2ScoreAdded(int score)
+        private void OnPlayerScoreAdded(int score)
         {
-            GameContext.PlayerData2.Score = score;
-            _hud.SetSecondPlayerScoreText(score);
+            _hud.SetPlayerScoreText(score);
         }
 
-        private PlayerShip CreatePlayerShip(PlayerShip playerShipPrefab, Player player)
+        private PlayerShip CreatePlayerShip(PlayerShip playerShipPrefab, Player player, PlayerData playerData)
         {
-            var playerShip = Instantiate(playerShipPrefab, _startedPosition.position, Quaternion.identity);
+            var startedPosition = new Vector3(playerData.Positions[0], playerData.Positions[1], _startedPosition.position.z);
+            var playerShip = Instantiate(playerShipPrefab, startedPosition, Quaternion.identity);
+
+            playerShip.SetHealth(playerData.Health);
 
             playerShip.OnEnemyDestroyed += OnEnemyDestroyed;
             playerShip.OnDestroyed += OnDestroyed;
+            playerShip.OnHealthChanged += OnPlayerHealthChanged;
+
             return playerShip;
             void OnEnemyDestroyed()
             {
                 player.AddScore(_scorePerEnemy);
             }
+            void OnPlayerHealthChanged(float health)
+            {
+                if (player.Id == PlayerIndex.First)
+                    UpdateFirstPlayerHealth(health);
+                //if (player.Id == PlayerIndex.Second)
+                //    UpdateSecondPlayerHealth(health);
+            }
             void OnDestroyed()
             {
-                playerShip.OnHealthChanged -= UpdateFirstPlayerHealth;
-                playerShip.OnHealthChanged -= UpdateSecondPlayerHealth;
+                playerShip.OnHealthChanged -= OnPlayerHealthChanged;
+
                 playerShip.OnEnemyDestroyed -= OnEnemyDestroyed;
                 playerShip.OnDestroyed -= OnDestroyed;
-                player.OnScoreAdded -= OnPlayer1ScoreAdded;
-                player.OnScoreAdded -= OnPlayer2ScoreAdded;
+
+                player.OnScoreAdded -= OnPlayerScoreAdded;
             }
         }
 

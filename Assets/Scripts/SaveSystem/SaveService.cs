@@ -20,5 +20,10 @@ namespace SpaceGame.SaveSystem
             var gameData = JsonConvert.DeserializeObject<GameData>(json);
             return gameData;
         }
+
+        public bool HasSave()
+        {
+            return PlayerPrefs.HasKey(nameof(SpaceGame));
+        }
     }
 }

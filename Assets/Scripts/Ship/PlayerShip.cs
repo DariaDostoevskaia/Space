@@ -1,4 +1,6 @@
+using SpaceGame.SaveSystem;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using Vector3 = UnityEngine.Vector3;
 
@@ -72,6 +74,10 @@ namespace SpaceGame.Ship
             {
                 _currentSpeed = _playerSpeed;
                 transform.Translate(_movement * _playerSpeed, _movementRelative);
+
+                var playerData = GameContext.CurrentGameData.PlayersData.First(playerData => playerData.Id == Guid);
+                playerData.Positions = new[] { transform.position.x, transform.position.y };
+
                 _lastMovement = _movement;
                 _movement = Vector3.zero;
                 return;
