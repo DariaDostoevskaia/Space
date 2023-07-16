@@ -4,6 +4,8 @@ using UnityEngine;
 using SpaceGame.SaveSystem;
 using SpaceGame.UI;
 using SpaceGame.SaveSystem.Dto;
+using System.Collections.Generic;
+using static UnityEditor.Experimental.GraphView.GraphView;
 
 namespace SpaceGame.Game
 {
@@ -23,6 +25,9 @@ namespace SpaceGame.Game
         [SerializeField] private HUD _hud;
         [SerializeField] private float _maxHealth = 10;
 
+        [SerializeField] private int _playersNumber = 2;
+        private Player _player;
+
         private void Start()
         {
             _enemyRepository.OnEnemyAdded += OnEnemyCountChanged;
@@ -30,53 +35,49 @@ namespace SpaceGame.Game
 
             var playerFactory = new PlayerFactory();
 
-            Player player1 = null;
-            Player player2 = null;
+            List<Player> listOfGameObjects = new List<Player>();
+            Player[] playersArray = listOfGameObjects.ToArray();
+
+            for (int i = 0; i < _playersNumber; i++)
+            {
+                _player = playersArray[i];
+                listOfGameObjects.Add(playersArray[i]);
+            }
+
             var playersData = GameContext.CurrentGameData.PlayersData;
 
             if (playersData.Count == 2)
             {
-                var playerData1 = playersData[0];
-                var playerData2 = playersData[1];
+                var playerData = playersData[0];
 
-                player1 = playerFactory.CreatePlayer(playerData1);
-                player2 = playerFactory.CreatePlayer(playerData2);
+                _player = playerFactory.CreatePlayer(playerData);
             }
             else
             {
-                player1 = playerFactory.CreatePlayer();
-                player2 = playerFactory.CreatePlayer();
+                _player = playerFactory.CreatePlayer();
 
-                var playerData1 = playerFactory.CreatePlayerData(player1);
-                var playerData2 = playerFactory.CreatePlayerData(player2);
+                var playerData = playerFactory.CreatePlayerData(_player);
 
-                playerData1.Health = playerData2.Health = _maxHealth;
+                playerData.Health = _maxHealth;
 
-                playerData1.Positions = new float[] { _startedPosition.position.x, _startedPosition.position.y };
-                playerData2.Positions = new float[] { _startedPosition.position.x, _startedPosition.position.y };
+                playerData.Positions = new float[] { _startedPosition.position.x, _startedPosition.position.y };
 
-                GameContext.CurrentGameData.PlayersData.Add(playerData1);
-                GameContext.CurrentGameData.PlayersData.Add(playerData2);
+                GameContext.CurrentGameData.PlayersData.Add(playerData);
             }
 
-            player1.OnScoreAdded += OnPlayer1ScoreAdded;
-            player2.OnScoreAdded += OnPlayer2ScoreAdded;
+            _player.OnScoreAdded += OnPlayerScoreAdded;
 
-            var firstPlayer = CreatePlayerShip(_player1ShipPrefab, player1, GameContext.CurrentGameData.PlayersData[0]);
-            var secondPlayer = CreatePlayerShip(_player2ShipPrefab, player2, GameContext.CurrentGameData.PlayersData[1]);
+            var playerShip = CreatePlayerShip(RandomPlayerPrefab(), _player, GameContext.CurrentGameData.PlayersData[0]);
 
-            player1.SetShipId(firstPlayer.Guid);
-            player2.SetShipId(secondPlayer.Guid);
+            _player.SetShipId(playerShip.Guid);
 
             _enemyRepository.OnEnemyAdded += TryKillPlayers;
 
-            firstPlayer.OnHealthChanged += UpdateFirstPlayerHealth;
-            secondPlayer.OnHealthChanged += UpdateSecondPlayerHealth;
+            playerShip.OnHealthChanged += UpdatePlayerHealth;
 
-            UpdateSecondPlayerHealth(secondPlayer.CurrentHealth);
-            UpdateFirstPlayerHealth(firstPlayer.CurrentHealth);
+            UpdatePlayerHealth(playerShip.CurrentHealth);
 
-            _enemyFactory.SetUp(new PlayerShip[] { firstPlayer, secondPlayer }, _maxHealth);
+            _enemyFactory.SetUp(new PlayerShip[] { playerShip }, _maxHealth);
 
             foreach (var enemyData in GameContext.CurrentGameData.EnemiesData)
             {
@@ -86,20 +87,16 @@ namespace SpaceGame.Game
             {
                 if (count == 10)
                 {
-                    firstPlayer.Damage(firstPlayer.CurrentHealth);
-                    secondPlayer.Damage(secondPlayer.CurrentHealth);
+                    playerShip.Damage(playerShip.CurrentHealth);
                 }
             }
         }
 
-        private void UpdateFirstPlayerHealth(float health)
+        private PlayerShip RandomPlayerPrefab()
         {
-            _hud.SetFirstPlayerHealthText(health);
-        }
-
-        private void UpdateSecondPlayerHealth(float health)
-        {
-            _hud.SetSecondPlayerHealthText(health);
+            PlayerShip[] playersPrefab = { _player1ShipPrefab, _player2ShipPrefab };
+            var playerIndex = Random.Range(0, playersPrefab.Length);
+            return playersPrefab[playerIndex];
         }
 
         private void OnEnemyCountChanged(int count)
@@ -107,14 +104,14 @@ namespace SpaceGame.Game
             _hud.SetEnemyCount(count);
         }
 
-        private void OnPlayer1ScoreAdded(int score)
+        private void UpdatePlayerHealth(float health)
         {
-            _hud.SetFirstPlayerScoreText(score);
+            _hud.SetPlayerHealthText(health);
         }
 
-        private void OnPlayer2ScoreAdded(int score)
+        private void OnPlayerScoreAdded(int score)
         {
-            _hud.SetSecondPlayerScoreText(score);
+            _hud.SetPlayerScoreText(score);
         }
 
         private PlayerShip CreatePlayerShip(PlayerShip playerShipPrefab, Player player, PlayerData playerData)
@@ -133,12 +130,12 @@ namespace SpaceGame.Game
             }
             void OnDestroyed()
             {
-                playerShip.OnHealthChanged -= UpdateFirstPlayerHealth;
-                playerShip.OnHealthChanged -= UpdateSecondPlayerHealth;
+                playerShip.OnHealthChanged -= UpdatePlayerHealth;
+
                 playerShip.OnEnemyDestroyed -= OnEnemyDestroyed;
                 playerShip.OnDestroyed -= OnDestroyed;
-                player.OnScoreAdded -= OnPlayer1ScoreAdded;
-                player.OnScoreAdded -= OnPlayer2ScoreAdded;
+
+                player.OnScoreAdded -= OnPlayerScoreAdded;
             }
         }
 
