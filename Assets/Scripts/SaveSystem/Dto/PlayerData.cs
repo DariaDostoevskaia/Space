@@ -7,6 +7,7 @@ namespace SpaceGame.SaveSystem.Dto
 
         public override string ToString()
         {
+            base.ToString();
             return $"{nameof(Score)}: {Score};\n";
         }
     }
