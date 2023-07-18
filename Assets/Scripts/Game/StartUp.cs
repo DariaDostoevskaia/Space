@@ -4,8 +4,9 @@ using UnityEngine;
 using SpaceGame.SaveSystem;
 using SpaceGame.UI;
 using SpaceGame.SaveSystem.Dto;
-using System.Collections.Generic;
-using static UnityEditor.Experimental.GraphView.GraphView;
+using System.Numerics;
+using Vector3 = UnityEngine.Vector3;
+using Quaternion = UnityEngine.Quaternion;
 
 namespace SpaceGame.Game
 {
@@ -67,14 +68,10 @@ namespace SpaceGame.Game
                 var playerData = playersData[index];
                 var player = playerFactory.CreatePlayer((PlayerIndex)index, playerData);
 
-                player.OnScoreAdded += OnPlayerScoreAdded;
-
                 var playerShip = CreatePlayerShip(_playerShipPrefabs[index], player, playerData);
                 player.SetShipId(playerShip.Guid);
 
                 playerShips[index] = playerShip;
-
-                UpdateFirstPlayerHealth(playerShip.CurrentHealth);
 
                 _enemyRepository.OnEnemyAdded += TryKillPlayers;
 
@@ -88,21 +85,6 @@ namespace SpaceGame.Game
             }
         }
 
-        private void OnEnemyCountChanged(int count)
-        {
-            _hud.SetEnemyCount(count);
-        }
-
-        private void UpdateFirstPlayerHealth(float health)
-        {
-            _hud.SetPlayerHealthText(health);
-        }
-
-        private void OnPlayerScoreAdded(int score)
-        {
-            _hud.SetPlayerScoreText(score);
-        }
-
         private PlayerShip CreatePlayerShip(PlayerShip playerShipPrefab, Player player, PlayerData playerData)
         {
             var startedPosition = new Vector3(playerData.Positions[0], playerData.Positions[1], _startedPosition.position.z);
@@ -112,29 +94,64 @@ namespace SpaceGame.Game
 
             playerShip.OnEnemyDestroyed += OnEnemyDestroyed;
             playerShip.OnDestroyed += OnDestroyed;
+
             playerShip.OnHealthChanged += OnPlayerHealthChanged;
 
+            OnPlayerHealthChanged(playerShip.CurrentHealth);
+            player.OnScoreAdded += OnPlayerScoreAdded;
+
             return playerShip;
-            void OnEnemyDestroyed()
+            void OnPlayerScoreAdded(int score)
             {
-                player.AddScore(_scorePerEnemy);
+                if (player.Id == PlayerIndex.First)
+                    OnFirstPlayerScoreAdded(score);
+                if (player.Id == PlayerIndex.Second)
+                    OnSecondPlayerScoreAdded(score);
             }
             void OnPlayerHealthChanged(float health)
             {
                 if (player.Id == PlayerIndex.First)
                     UpdateFirstPlayerHealth(health);
-                //if (player.Id == PlayerIndex.Second)
-                //    UpdateSecondPlayerHealth(health);
+                if (player.Id == PlayerIndex.Second)
+                    UpdateSecondPlayerHealth(health);
+            }
+            void OnEnemyDestroyed()
+            {
+                player.AddScore(_scorePerEnemy);
             }
             void OnDestroyed()
             {
+                player.OnScoreAdded -= OnPlayerScoreAdded;
                 playerShip.OnHealthChanged -= OnPlayerHealthChanged;
 
                 playerShip.OnEnemyDestroyed -= OnEnemyDestroyed;
                 playerShip.OnDestroyed -= OnDestroyed;
-
-                player.OnScoreAdded -= OnPlayerScoreAdded;
             }
+        }
+
+        private void OnEnemyCountChanged(int count)
+        {
+            _hud.SetEnemyCount(count);
+        }
+
+        private void UpdateFirstPlayerHealth(float health)
+        {
+            _hud.Set1PlayerHealthText(health);
+        }
+
+        private void UpdateSecondPlayerHealth(float health)
+        {
+            _hud.Set2PlayerHealthText(health);
+        }
+
+        private void OnFirstPlayerScoreAdded(int score)
+        {
+            _hud.Set1PlayerScoreText(score);
+        }
+
+        private void OnSecondPlayerScoreAdded(int score)
+        {
+            _hud.Set2PlayerScoreText(score);
         }
 
         private void OnDestroy()

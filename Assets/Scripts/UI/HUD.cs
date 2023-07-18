@@ -10,9 +10,11 @@ namespace SpaceGame.UI
     {
         [SerializeField] private Button _menuExitButton;
 
-        [SerializeField] private TextMeshProUGUI _playersHealthText;
+        [SerializeField] private TextMeshProUGUI _player1HealthText;
+        [SerializeField] private TextMeshProUGUI _player2HealthText;
 
-        [SerializeField] private TextMeshProUGUI _playersScoreText;
+        [SerializeField] private TextMeshProUGUI _player1ScoreText;
+        [SerializeField] private TextMeshProUGUI _player2ScoreText;
 
         [SerializeField] private TextMeshProUGUI _enemyShipCountText;
 
@@ -28,14 +30,24 @@ namespace SpaceGame.UI
             SceneManager.LoadScene((int)Scene.Menu);
         }
 
-        public void SetPlayerHealthText(float health)
+        public void Set1PlayerHealthText(float health)
         {
-            _playersHealthText.text = $"Player Health: {health}";
+            _player1HealthText.text = $"Player 1 Health: {health}";
         }
 
-        public void SetPlayerScoreText(int score)
+        public void Set2PlayerHealthText(float health)
         {
-            _playersScoreText.text = $"Player Score: {score}";
+            _player2HealthText.text = $"Player 2 Health: {health}";
+        }
+
+        public void Set1PlayerScoreText(int score)
+        {
+            _player1ScoreText.text = $"Player 1 Score: {score}";
+        }
+
+        public void Set2PlayerScoreText(int score)
+        {
+            _player2ScoreText.text = $"Player 2 Score: {score}";
         }
 
         public void SetEnemyCount(int count)
