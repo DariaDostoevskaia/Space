@@ -12,16 +12,16 @@ namespace SpaceGame.SaveSystem.Dto
         public override string ToString()
         {
             var players = string.Join(", ", PlayersData
-                .Select(playerData => playerData
+                .Select(playersData => playersData
                 .ToString()));
 
             var enemies = string.Join(", ", EnemiesData
                 .Select(enemiesData => enemiesData
                 .ToString()));
 
-            var allPlayers = new[] { players, enemies };
+            var allPlayers = players + enemies;
 
-            return allPlayers.ToString();
+            return allPlayers;
         }
     }
 }

@@ -104,7 +104,7 @@ MonoBehaviour:
   _timeBetweenFires: 0.8
   _destroyAudio: {fileID: 8300000, guid: 2b60c9903e1ecad48a6d362817847fd8, type: 3}
   _explosion: {fileID: 5500542896147154431, guid: ae688b459749a8947b67ee7f7dfff2e9, type: 3}
-  _speed: 0.02
+  _speed: 0.04
   _firstShootDelay: 3
 --- !u!58 &3703370312722912249
 CircleCollider2D:

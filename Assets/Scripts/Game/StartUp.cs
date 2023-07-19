@@ -4,7 +4,6 @@ using UnityEngine;
 using SpaceGame.SaveSystem;
 using SpaceGame.UI;
 using SpaceGame.SaveSystem.Dto;
-using System.Numerics;
 using Vector3 = UnityEngine.Vector3;
 using Quaternion = UnityEngine.Quaternion;
 
@@ -92,28 +91,29 @@ namespace SpaceGame.Game
 
             playerShip.SetHealth(playerData.Health);
 
+            playerShip.OnHealthChanged += OnPlayerHealthChanged;
+            OnPlayerHealthChanged(playerShip.CurrentHealth);
+
+            player.OnScoreAdded += OnPlayerScoreAdded;
+            OnPlayerScoreAdded(player.GetScore());
+
             playerShip.OnEnemyDestroyed += OnEnemyDestroyed;
             playerShip.OnDestroyed += OnDestroyed;
 
-            playerShip.OnHealthChanged += OnPlayerHealthChanged;
-
-            OnPlayerHealthChanged(playerShip.CurrentHealth);
-            player.OnScoreAdded += OnPlayerScoreAdded;
-
             return playerShip;
-            void OnPlayerScoreAdded(int score)
-            {
-                if (player.Id == PlayerIndex.First)
-                    OnFirstPlayerScoreAdded(score);
-                if (player.Id == PlayerIndex.Second)
-                    OnSecondPlayerScoreAdded(score);
-            }
             void OnPlayerHealthChanged(float health)
             {
-                if (player.Id == PlayerIndex.First)
-                    UpdateFirstPlayerHealth(health);
                 if (player.Id == PlayerIndex.Second)
                     UpdateSecondPlayerHealth(health);
+                if (player.Id == PlayerIndex.First)
+                    UpdateFirstPlayerHealth(health);
+            }
+            void OnPlayerScoreAdded(int score)
+            {
+                if (player.Id == PlayerIndex.Second)
+                    OnSecondPlayerScoreAdded(score);
+                if (player.Id == PlayerIndex.First)
+                    OnFirstPlayerScoreAdded(score);
             }
             void OnEnemyDestroyed()
             {

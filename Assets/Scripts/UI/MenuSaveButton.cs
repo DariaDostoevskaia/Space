@@ -1,6 +1,4 @@
 using SpaceGame.SaveSystem;
-using SpaceGame.UI;
-using System;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -17,7 +15,7 @@ public class MenuSaveButton : MonoBehaviour
     {
         var saveService = new SaveService();
         saveService.SaveGame(GameContext.CurrentGameData);
-        Debug.Log($"Save {GameContext.CurrentGameData}");
+        Debug.Log($"Save:\n {GameContext.CurrentGameData}");
     }
 
     private void OnDestroy()
