@@ -1,5 +1,6 @@
 using SpaceGame.SaveSystem.Dto;
 using SpaceGame.ScoreSystem;
+using System;
 
 namespace SpaceGame.SaveSystem
 {
@@ -16,6 +17,7 @@ namespace SpaceGame.SaveSystem
         public PlayerData CreatePlayerData(Player player)
         {
             var playerData = new PlayerData();
+            playerData.Id = Guid.NewGuid();
             playerData.Score = player.GetScore();
             return playerData;
         }
