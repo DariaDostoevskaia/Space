@@ -27,7 +27,6 @@ namespace SpaceGame.Game
         [SerializeField] private int _playersNumber = 2;
 
         [SerializeField] private PlayerShip[] _playerShipPrefabs;
-
         private List<PlayerData> _playersData;
 
         private void Start()
@@ -48,7 +47,6 @@ namespace SpaceGame.Game
                 playerData.Health = _maxHealth;
                 playerData.Positions = new float[] { _startedPosition.position.x, _startedPosition.position.y };
 
-                playerData.Id = Guid.NewGuid();
                 _playersData.Add(playerData);
             }
 
