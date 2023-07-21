@@ -99,12 +99,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 07aadb91f3d426749a3b9492caab8153, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _maxHealth: 7
+  _maxHealth: 5
   _laser: {fileID: 148252914171446206, guid: 1de27372b7edba942b659f5486c183d8, type: 3}
-  _timeBetweenFires: 0.5
+  _timeBetweenFires: 0.8
   _destroyAudio: {fileID: 8300000, guid: 2b60c9903e1ecad48a6d362817847fd8, type: 3}
   _explosion: {fileID: 5500542896147154431, guid: ae688b459749a8947b67ee7f7dfff2e9, type: 3}
-  _speed: 0.02
+  _speed: 0.04
   _firstShootDelay: 3
 --- !u!58 &3703370312722912249
 CircleCollider2D:

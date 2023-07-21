@@ -4,9 +4,10 @@ using UnityEngine;
 using SpaceGame.SaveSystem;
 using SpaceGame.UI;
 using SpaceGame.SaveSystem.Dto;
-using System.Numerics;
 using Vector3 = UnityEngine.Vector3;
 using Quaternion = UnityEngine.Quaternion;
+using System;
+using System.Collections.Generic;
 
 namespace SpaceGame.Game
 {
@@ -26,6 +27,7 @@ namespace SpaceGame.Game
         [SerializeField] private int _playersNumber = 2;
 
         [SerializeField] private PlayerShip[] _playerShipPrefabs;
+        private List<PlayerData> _playersData;
 
         private void Start()
         {
@@ -34,10 +36,10 @@ namespace SpaceGame.Game
 
             var playerFactory = new PlayerFactory();
 
-            var playersData = GameContext.CurrentGameData.PlayersData;
-            while (playersData.Count < _playersNumber)
+            _playersData = GameContext.CurrentGameData.PlayersData;
+            while (_playersData.Count < _playersNumber)
             {
-                var index = _playersNumber - playersData.Count - 1;
+                var index = _playersNumber - _playersData.Count - 1;
                 var player = playerFactory.CreatePlayer((PlayerIndex)index);
 
                 var playerData = playerFactory.CreatePlayerData(player);
@@ -45,7 +47,7 @@ namespace SpaceGame.Game
                 playerData.Health = _maxHealth;
                 playerData.Positions = new float[] { _startedPosition.position.x, _startedPosition.position.y };
 
-                playersData.Add(playerData);
+                _playersData.Add(playerData);
             }
 
             var playerShips = new PlayerShip[_playersNumber];
@@ -65,10 +67,11 @@ namespace SpaceGame.Game
 
             void CreatePlayerAndShip(int index)
             {
-                var playerData = playersData[index];
+                var playerData = _playersData[index];
                 var player = playerFactory.CreatePlayer((PlayerIndex)index, playerData);
 
                 var playerShip = CreatePlayerShip(_playerShipPrefabs[index], player, playerData);
+
                 player.SetShipId(playerShip.Guid);
 
                 playerShips[index] = playerShip;
@@ -92,28 +95,31 @@ namespace SpaceGame.Game
 
             playerShip.SetHealth(playerData.Health);
 
+            playerShip.OnHealthChanged += OnPlayerHealthChanged;
+            OnPlayerHealthChanged(playerShip.CurrentHealth);
+
+            player.OnScoreAdded += OnPlayerScoreAdded;
+            OnPlayerScoreAdded(player.GetScore());
+
+            playerShip.SetId(playerData.Id);
+
             playerShip.OnEnemyDestroyed += OnEnemyDestroyed;
             playerShip.OnDestroyed += OnDestroyed;
 
-            playerShip.OnHealthChanged += OnPlayerHealthChanged;
-
-            OnPlayerHealthChanged(playerShip.CurrentHealth);
-            player.OnScoreAdded += OnPlayerScoreAdded;
-
             return playerShip;
-            void OnPlayerScoreAdded(int score)
-            {
-                if (player.Id == PlayerIndex.First)
-                    OnFirstPlayerScoreAdded(score);
-                if (player.Id == PlayerIndex.Second)
-                    OnSecondPlayerScoreAdded(score);
-            }
             void OnPlayerHealthChanged(float health)
             {
-                if (player.Id == PlayerIndex.First)
-                    UpdateFirstPlayerHealth(health);
                 if (player.Id == PlayerIndex.Second)
                     UpdateSecondPlayerHealth(health);
+                if (player.Id == PlayerIndex.First)
+                    UpdateFirstPlayerHealth(health);
+            }
+            void OnPlayerScoreAdded(int score)
+            {
+                if (player.Id == PlayerIndex.Second)
+                    OnSecondPlayerScoreAdded(score);
+                if (player.Id == PlayerIndex.First)
+                    OnFirstPlayerScoreAdded(score);
             }
             void OnEnemyDestroyed()
             {
@@ -123,6 +129,8 @@ namespace SpaceGame.Game
             {
                 player.OnScoreAdded -= OnPlayerScoreAdded;
                 playerShip.OnHealthChanged -= OnPlayerHealthChanged;
+
+                _playersData.Remove(playerData);
 
                 playerShip.OnEnemyDestroyed -= OnEnemyDestroyed;
                 playerShip.OnDestroyed -= OnDestroyed;
