@@ -6,7 +6,6 @@ using SpaceGame.UI;
 using SpaceGame.SaveSystem.Dto;
 using Vector3 = UnityEngine.Vector3;
 using Quaternion = UnityEngine.Quaternion;
-using System;
 using System.Collections.Generic;
 
 namespace SpaceGame.Game
@@ -27,6 +26,7 @@ namespace SpaceGame.Game
         [SerializeField] private int _playersNumber = 2;
 
         [SerializeField] private PlayerShip[] _playerShipPrefabs;
+
         private List<PlayerData> _playersData;
 
         private void Start()
@@ -117,9 +117,13 @@ namespace SpaceGame.Game
             void OnPlayerScoreAdded(int score)
             {
                 if (player.Id == PlayerIndex.Second)
+                {
                     OnSecondPlayerScoreAdded(score);
+                }
                 if (player.Id == PlayerIndex.First)
+                {
                     OnFirstPlayerScoreAdded(score);
+                }
             }
             void OnEnemyDestroyed()
             {
